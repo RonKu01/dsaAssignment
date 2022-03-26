@@ -302,7 +302,7 @@ void deleteDependants(){
       do{
         cout << "--------------------------------------" << endl;
         cout << "Which dependant do you want to delete?" << endl;
-        cout << "Note: Enter -1 to go back " << endl;
+        cout << "Note: Enter -1 to go back             " << endl;
         cout << "--------------------------------------" << endl;
         cout << "Number: "; 
         cin >> depDelete;
@@ -313,7 +313,6 @@ void deleteDependants(){
           break;
         }else
         {
-
           int selectedDep = depDelete - 1;
           if (selectedDep > rear) {
             cout << "Please only enter valid dependant Number!" << endl;
@@ -326,13 +325,12 @@ void deleteDependants(){
               dep[i].depDetails.gender = dep[i+1].depDetails.gender;
               dep[i].relation = dep[i+1].relation;
               dep[i].age = dep[i+1].age;
-     
-             
             }
-              system("cls");
-              cout << "--------------------------------------" << endl;
-              cout << "Delete Succesfully! " << endl;
-              cout << "--------------------------------------" << endl;
+
+            system("cls");
+            cout << "--------------------------------------" << endl;
+            cout << "Delete Succesfully!                   " << endl;
+            cout << "--------------------------------------" << endl;
             rear--;
 
             if (rear == -1) {
@@ -342,10 +340,8 @@ void deleteDependants(){
             break;
           }
         }
-
       }while(!(depDelete == -1));
    }
-  
 }
 
 void manageDependants(){
@@ -359,8 +355,8 @@ void manageDependants(){
     cout << "Press insert option to continue" << endl;
     cout << "1) Add Dependants              " << endl;
     cout << "2) Display Dependants          " << endl;
-    cout << "3) Delete Dependants          " << endl;
-    cout << "4) Exit                        " << endl;
+    cout << "3) Delete Dependants           " << endl;
+    cout << "4) Return to Home Page         " << endl;
     cout << "-------------------------------" << endl; 
 
     cin >> userOption2;
@@ -432,22 +428,40 @@ void checkIn(){
 
     char input = ' ';
     cin >> input;
-    char upperInput = toupper(input);
+    cin.ignore();
 
-    if(upperInput == 'Y')
+    if(input == 'Y' || input == 'y')
     {
       displayDependants();
 
       do{
         cout << "Keyin the amount of dependants: ";
         cin >> userOption ;
-        int arrDepVisited[userOption];
+        cin.ignore();
+        int arrDepVisited[userOption]; int x=0; bool isNew = true;
   
         //Validation Needed here for userOption
         for (int i=0; i < userOption; i++){
-            cout << "Dependant " << i+1 << ": ";
-            cin >> userOption2;
+
+          cout << "Dependant " << i+1 << ": ";
+          cin >> userOption2;
+          cin.ignore();
+
+          while(x < userOption) {
+            if (arrDepVisited[x] == userOption2) {
+              isNew = false;
+              cout << "Index " << userOption2 << " dependant has already selected" << endl;
+              i--;
+            }
+            x++;
+          }
+
+          if (isNew){
             arrDepVisited[i] = userOption2 - 1;
+          } else {
+            cout << "RE-enter again!" << endl;
+            cout << "---------------------------------------------------" << endl;
+          }
         }
   
         for (int n : arrDepVisited) {
@@ -460,17 +474,15 @@ void checkIn(){
         cout << "(Yes: Y // No: N)" << endl; 
         char input2 = ' ';
         cin >> input2;
-        char upperInput2 = toupper(input2);
+        cin.ignore();
 
-        if (upperInput2 == 'Y'){
+        if (input2 == 'Y' || input2 == 'y'){
           isConfirm = true;
           for (int n : arrDepVisited) {
             depName[n] = dep[n].depDetails.name;
           }
-
           system("cls");
         }
-        
       } while (!(isConfirm == true));
     }
   }
@@ -488,12 +500,13 @@ void checkIn(){
 
   //Check In - Enter Code
   cout << "Insert Venue Code: "; 
-  cin >> userOption3; 
+  cin >> userOption3;
+  cin.ignore(); 
 
   for (int i = 0; i < 10; i ++){
     if (userOption3 == (*(est + i)).code) {
       estCode = (*(est + i)).code;
-      venue = (*(est + i)).venue; \
+      venue = (*(est + i)).venue; 
 
       system("cls");
       cout << "-------------------------------" << endl;
@@ -710,15 +723,14 @@ void indiFunction(){
       }
   } while (!(userOption == 5));
 
-  // system("cls");
+  system("cls");
   cout << "--------------------------------------" << endl;
   cout << "      Individual Logged Out!          " << endl;
   cout << "--------------------------------------" << endl;
 }
 
 int main() {
-  
-  //Add admin at the start
+
   int userLogin;
   
   cout << "-------------------------------" << endl;
@@ -751,7 +763,7 @@ int main() {
   } while (!(userLogin == 3));
 
   cout << "--------------------------------------" << endl;
-  cout << "      Application Exit! Goodbye       " << endl;
+  cout << "      Application Exit! Goodbye!      " << endl;
   cout << "--------------------------------------" << endl;
 
   return 0;
