@@ -602,7 +602,6 @@ void indiFunction(){
 
   if (gender == 'M' || gender == 'm'){
     indi.userDetails.gender = "Male";
-    cout << indi.userDetails.gender << endl;
   } else 
     if (gender == 'F' || gender == 'f'){
     indi.userDetails.gender = "Female";
@@ -642,38 +641,37 @@ void indiFunction(){
   
   indi.phoneNum = phoneNumber;
 
-    cout << "Vaccination Status : ";
-  getline(cin, indi.vacDetails);
-  
-//   do{
-//     cout << "Vaccination Status :             " << endl;
-//     cout << "---------------------------------" << endl; 
-//     cout << "Please insert options to continue" << endl;
-//     cout << "1) Never                         " << endl;
-//     cout << "2) Partial                       " << endl;
-//     cout << "3) Fully                         " << endl;
-//     cout << "---------------------------------" << endl; 
-//     cin >> userInput;
+  cout << "Vaccination Status :             " << endl;
+  cout << "---------------------------------" << endl; 
+  cout << "Please insert options to continue" << endl;
+  cout << "1) Never                         " << endl;
+  cout << "2) Partial                       " << endl;
+  cout << "3) Fully                         " << endl;
+  cout << "---------------------------------" << endl; 
+  cin >> userInput;
+  cin.ignore();
 
-//     if(userInput == 1)
-//     {
-//       indi.vacDetails = "Never";
-//     }
-//     else if(userInput == 2)
-//     {
-//       indi.vacDetails = "Partial";
-//     }
-//     else if(userInput == 3)
-//     {
-//       indi.vacDetails = "Fully";
-//     }
-//     else{
-//       cout << "Please only keyin 1,2 or 3 !" << endl; 
-//     }
-    
-//   }while(!(userInput == 3));
-  
-//   getline(cin, indi.vacDetails);
+  while(userInput != 1 && userInput != 2 && userInput != 3){
+    cin.clear();
+    cout << "---------------------------------" << endl;
+    cout << "Fail! Please Only Enter 1/ 2/ 3! " << endl;
+    cout << "---------------------------------" << endl;
+    cout << "Please insert your Gender (M / F): ";
+    cin >> gender;
+    cin.ignore(100, '\n');
+  }
+
+  if (userInput == 1){
+    indi.vacDetails = "Never";
+  }
+  else if(userInput == 2)
+  {
+    indi.vacDetails = "Partial";
+  }
+  else if(userInput == 3)
+  {
+    indi.vacDetails = "Fully";
+  }
 
   cout << "Risk Status : ";
   getline(cin, indi.riskStat);
@@ -683,7 +681,6 @@ void indiFunction(){
   cout << "    Registration Completed      " << endl; 
   cout << "--------------------------------" << endl; 
   cout << "Welcome " << indi.userDetails.name << endl;
-
 
   do 
   {
@@ -715,7 +712,7 @@ void indiFunction(){
 
   // system("cls");
   cout << "--------------------------------------" << endl;
-  cout << "      Application Ended! Goodbye!     " << endl;
+  cout << "      Individual Logged Out!          " << endl;
   cout << "--------------------------------------" << endl;
 }
 
@@ -734,6 +731,7 @@ int main() {
     cout << "Please insert options to LOGIN " << endl;
     cout << "1) Individual                  " << endl;
     cout << "2) Admin                       " << endl;
+    cout << "3) Exit Application            " << endl;
     cout << "-------------------------------" << endl; 
 
     cin >> userLogin;
@@ -751,6 +749,10 @@ int main() {
           break;
       }
   } while (!(userLogin == 3));
+
+  cout << "--------------------------------------" << endl;
+  cout << "      Application Exit! Goodbye       " << endl;
+  cout << "--------------------------------------" << endl;
 
   return 0;
 }
