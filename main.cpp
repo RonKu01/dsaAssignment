@@ -228,6 +228,10 @@ void displayDependants(){
 }
 
 void addDependants() {
+  string depIcPassport; 
+  char depGender;
+  int userInput;
+
 
    if (rear == n - 1)
      cout<<"Failed : Reached Maximum Dependants (10)"<<endl;
@@ -238,16 +242,87 @@ void addDependants() {
         cin >> dep[front].depDetails.name;
 
         cout << "Dependant IC / Passport: ";
-        cin >> dep[front].depDetails.icPassport;
+        cin >> depIcPassport;
+        cin.ignore();
+
+        while(!is_icPassport_valid(depIcPassport)) {
+            cout << "-----------------------------------" << endl;
+            cout << "      Invalid IC Passport          " << endl;
+            cout << "      Format '000000-00-0000'      " << endl; 
+            cout << "-----------------------------------" << endl;
+            cout << "Please insert correct IC Passport: ";
+            cin.clear();
+            cin >> depIcPassport;
+            cin.ignore();
+          }
+        
+        dep[front].depDetails.icPassport = depIcPassport;
 
         cout << "Dependant Address: ";
         cin >> dep[front].depDetails.address;
 
-        cout << "Dependant Gender: ";
-        cin >> dep[front].depDetails.gender;
 
-        cout << "Relationship: ";
-        cin >> dep[front].relation;
+        cout << "Dependant Gender(M / F): ";
+        cin >> depGender;
+        cin.ignore(100,'\n');
+
+        while(depGender != 'M' && depGender != 'm' && depGender != 'F' && depGender != 'f'){
+          cin.clear();
+          cout << "---------------------------------" << endl;
+          cout << "Invalid! Only Enter (M / F) only!" << endl;
+          cout << "---------------------------------" << endl;
+          cout << "Please insert your Gender (M / F): ";
+          cin >> depGender;
+          cin.ignore(100, '\n');
+        }
+
+        if (depGender == 'M' || depGender == 'm'){
+          indi.userDetails.gender = "Male";
+        } else 
+          if (depGender == 'F' || depGender == 'f'){
+          indi.userDetails.gender = "Female";
+        }
+        dep[front].depDetails.gender = depGender;
+
+        
+        cout << "---------------------------------" << endl; 
+        cout << "          Relationship           " << endl;
+        cout << "---------------------------------" << endl;
+        cout << "Please Select Relantionship      " << endl;
+        cout << "1) Son                           " << endl;
+        cout << "2) Daughter                      " << endl;
+        cout << "---------------------------------" << endl;
+        cout << "Input: ";
+        cin >> userInput;
+        cin.ignore();
+
+        while(!(cin >> userInput)){
+          while(userInput != 1 && userInput !=2){
+            cin.clear();
+            cout << "----------------------------------" << endl;
+            cout << "Fail! Please Only Enter 1/ 2/ 3!  " << endl;
+            cout << "----------------------------------" << endl;
+            cout << "Input: ";
+            cin >> userInput;
+            cin.ignore(100, '\n');
+          }
+         
+          cin.clear();
+          cout << "----------------------------------" << endl;
+          cout << "Fail! Please Only Enter Number!   " << endl;
+          cout << "----------------------------------" << endl;
+          cout << "Input: ";
+          cin >> userInput;
+          cin.ignore(100, '\n');       
+        }
+
+        if(userInput == 1){
+          dep[front].relation = "Son";
+        }
+        else if(userInput == 2){
+          dep[front].relation = "Daugther";
+        }
+
 
         cout << "Dependants Age: ";
         cin >> dep[front].age;
