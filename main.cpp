@@ -655,15 +655,15 @@ void indiFunction(){
   cin.ignore();
 
   while(!is_phoneNumber_valid(phoneNumber)) {
-            cout << "-------------------------------------" << endl;
-            cout << "         Invalid Phone Number        " << endl;
-            cout << "         Format '000-000-0000'       " << endl; 
-            cout << "-------------------------------------" << endl;
-            cout << "Please insert correct Phone Number: ";
-        		cin.clear();
-            cin >> phoneNumber;
-            cin.ignore();
-          }
+    cout << "-------------------------------------" << endl;
+    cout << "         Invalid Phone Number        " << endl;
+    cout << "         Format '000-000-0000'       " << endl; 
+    cout << "-------------------------------------" << endl;
+    cout << "Please insert correct Phone Number: ";
+    cin.clear();
+    cin >> phoneNumber;
+    cin.ignore();
+  }
   
   indi.phoneNum = phoneNumber;
 
