@@ -53,7 +53,6 @@ Dependants dep[10];
 int n = 10, front = - 1, rear = - 1;
 int numberOfDependants = 0;
 
-//cout << 
 
 //Individual Declaration for graph
 // Individual red;
