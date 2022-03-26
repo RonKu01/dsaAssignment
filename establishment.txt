@@ -1,7 +1,7 @@
-101 FamilyMart
-102 7Eleven
+101 FMart
+102 GMart
 103 KKMart
-104 Campus
+104 UNI
 105 TGV
 106 GSC
 107 MBO
