@@ -42,6 +42,7 @@ struct History{
   string date;
   string time;
   Dependants dep[depArrSize];
+  int totalDep;
   History* nxtHistory;
 } *top;
 
@@ -52,7 +53,6 @@ Individual indi;
 Dependants dep[10];
 int n = 10, front = - 1, rear = - 1;
 int numberOfDependants = 0;
-
 
 //Individual Declaration for graph
 // Individual red;
@@ -387,7 +387,6 @@ void pushHistory
 ){
   History* nHistory = new History;
 
-  numberOfDependants = depNum;
   time_t now = time(0);
   tm *ltm = localtime(&now);
 
@@ -399,9 +398,14 @@ void pushHistory
   nHistory->indi.userDetails.name = indiName;
   nHistory->indi.vacDetails = vacDetails;
   nHistory->indi.riskStat = risk;
+  nHistory->totalDep = depNum;
 
   for (int i=0; i < depNum; i++){
     nHistory->dep[i].depDetails.name = (*(depPtr + i));
+  }
+
+  if (depNum == 0) {
+    nHistory->dep[0].depDetails.name = "-";
   }
 
   nHistory->nxtHistory = NULL;
@@ -415,7 +419,7 @@ void checkIn(){
   int estCode;
   string venue;
   string depName[10];
-  bool isConfirm = false;
+  bool isConfirm = false; 
 
   Establishment* est;
   est = getEstList();
@@ -438,35 +442,36 @@ void checkIn(){
         cout << "Keyin the amount of dependants: ";
         cin >> userOption ;
         cin.ignore();
-        int arrDepVisited[userOption]; int x=0; bool isNew = true;
-  
-        //Validation Needed here for userOption
-        for (int i=0; i < userOption; i++){
+        int arrDepVisited[userOption]; bool isNew = true;  int x = 0; 
+
+        for (int i = 0; i < userOption; i++){
 
           cout << "Dependant " << i+1 << ": ";
           cin >> userOption2;
           cin.ignore();
 
-          while(x < userOption) {
-            if (arrDepVisited[x] == userOption2) {
+          int selectedDep = userOption2 - 1;
+
+          while(x < i) {
+            if (arrDepVisited[x] == selectedDep) {
               isNew = false;
-              cout << "Index " << userOption2 << " dependant has already selected" << endl;
+              cout << "Index " << selectedDep + 1 << " dependant has already selected" << endl;
+              cout << "RE-enter with ANOTHER dependants again!" << endl;
+              cout << "---------------------------------------------------" << endl;
               i--;
+              x--;
             }
             x++;
-          }
+          } 
 
           if (isNew){
-            arrDepVisited[i] = userOption2 - 1;
-          } else {
-            cout << "RE-enter again!" << endl;
-            cout << "---------------------------------------------------" << endl;
+            arrDepVisited[i] = selectedDep;
           }
+          isNew = true;
         }
   
-        for (int n : arrDepVisited) {
-          cout << "You are with " << dep[n].depDetails.name << "." << endl;
-
+        for (int n = 0; n < userOption; n++) {
+          cout << "You are with " << dep[arrDepVisited[n]].depDetails.name << "." << endl;
         }
         
         cout << "-----------------------------" << endl;
@@ -478,16 +483,17 @@ void checkIn(){
 
         if (input2 == 'Y' || input2 == 'y'){
           isConfirm = true;
-          for (int n : arrDepVisited) {
-            depName[n] = dep[n].depDetails.name;
+          for (int n = 0; n < userOption; n++) {
+            depName[n] = dep[arrDepVisited[n]].depDetails.name;
           }
           system("cls");
+
         }
       } while (!(isConfirm == true));
     }
   }
 
-  // display est venue
+  // Display est venue (DONE)
   cout << "----------------" << endl;
   cout << "   Venue List   " << endl;
   cout << "----------------" << endl;
@@ -498,7 +504,7 @@ void checkIn(){
   
   cout << "----------------" << endl;
 
-  //Check In - Enter Code
+  //Check In - Enter Code (Need validation)
   cout << "Insert Venue Code: "; 
   cin >> userOption3;
   cin.ignore(); 
@@ -513,7 +519,6 @@ void checkIn(){
       cout << "     Check IN Successfully!    " << endl;
       cout << "-------------------------------" << endl;
       break;
-      
     }
   }
 
@@ -539,8 +544,9 @@ void displayHistoryList() {
   while (nav != NULL)
   {
     string depNames = "";
-    if (numberOfDependants > 0){
-      for (int i = 0; i < numberOfDependants; i++){
+
+    if ((nav->totalDep) > 0){
+      for (int i = 0; i < (nav->totalDep); i++){
         depNames += (nav->dep[i].depDetails.name + ",");
       };
       depNames.back() = ' ';

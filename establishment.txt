@@ -1,0 +1,10 @@
+101 FamilyMart
+102 7Eleven
+103 KKMart
+104 Campus
+105 TGV
+106 GSC
+107 MBO
+108 MCD
+109 Domino
+110 KFC
