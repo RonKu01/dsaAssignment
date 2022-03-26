@@ -134,6 +134,7 @@ void updateProfile(){
     cout << "3) Address                       " << endl;
     cout << "4) Exit                          " << endl;
     cout << "---------------------------------" << endl; 
+    cout << "Input: ";
     
     cin >> userOption;
     cin.ignore();
@@ -145,7 +146,10 @@ void updateProfile(){
           getline(cin, email);
 
           while(!is_email_valid(email)) {
-            cout << "Invalid Email" << endl;
+            cout << "-----------------------------" << endl;
+            cout << "         Invalid Email       " << endl;
+            cout << "   Format 'abc@example.com'  " << endl;    
+            cout << "-----------------------------" << endl;
             cout << "Please insert New Email: ";
         		cin.clear();
             getline(cin, email);
@@ -161,7 +165,10 @@ void updateProfile(){
           getline(cin, phoneNumber);
 
           while(!is_phoneNumber_valid(phoneNumber)) {
-            cout << "Invalid Phone Number" << endl;
+            cout << "-------------------------------------" << endl;
+            cout << "         Invalid Phone Number        " << endl;
+            cout << "         Format '000-000-0000'       " << endl; 
+            cout << "-------------------------------------" << endl;
             cout << "Please insert New Phone Number: ";
         		cin.clear();
             getline(cin, phoneNumber);
@@ -654,23 +661,25 @@ void indiFunction(){
   
   indi.phoneNum = phoneNumber;
 
-  cout << "Vaccination Status :             " << endl;
+  cout << "---------------------------------" << endl; 
+  cout << "        Vaccination Status       " << endl;
   cout << "---------------------------------" << endl; 
   cout << "Please insert options to continue" << endl;
   cout << "1) Never                         " << endl;
   cout << "2) Partial                       " << endl;
   cout << "3) Fully                         " << endl;
   cout << "---------------------------------" << endl; 
+  cout << "Please select Vaccination Status: ";
   cin >> userInput;
   cin.ignore();
 
   while(userInput != 1 && userInput != 2 && userInput != 3){
     cin.clear();
-    cout << "---------------------------------" << endl;
-    cout << "Fail! Please Only Enter 1/ 2/ 3! " << endl;
-    cout << "---------------------------------" << endl;
-    cout << "Please insert your Gender (M / F): ";
-    cin >> gender;
+    cout << "----------------------------------" << endl;
+    cout << "Fail! Please Only Enter 1/ 2/ 3!  " << endl;
+    cout << "----------------------------------" << endl;
+    cout << "Please select Vaccination Status: ";
+    cin >> userInput;
     cin.ignore(100, '\n');
   }
 
@@ -685,9 +694,36 @@ void indiFunction(){
   {
     indi.vacDetails = "Fully";
   }
+  
+  
+  cout << "---------------------------------" << endl; 
+  cout << "           Risk Status           " << endl;
+  cout << "---------------------------------" << endl; 
+  cout << "Please insert options to continue" << endl;
+  cout << "1) Low                           " << endl;
+  cout << "2) High                          " << endl;
+  cout << "---------------------------------" << endl; 
+  cout << "Please select Risk Status: ";
+  cin >> userInput;
+  cin.ignore();
 
-  cout << "Risk Status : ";
-  getline(cin, indi.riskStat);
+  while(userInput != 1 && userInput != 2){
+    cin.clear();
+    cout << "----------------------------------" << endl;
+    cout << "Fail! Please Only Enter 1 or 2!   " << endl;
+    cout << "----------------------------------" << endl;
+    cout << "Please select Risk Status: ";
+    cin >> userInput;
+    cin.ignore(100, '\n');
+  }
+
+  if (userInput == 1){
+    indi.riskStat = "Low";
+  }
+  else if(userInput == 2)
+  {
+    indi.riskStat = "High";
+  }
   system("cls");
 
   cout << "--------------------------------" << endl; 
