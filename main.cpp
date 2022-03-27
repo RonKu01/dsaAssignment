@@ -678,7 +678,7 @@ void checkIn(){
   int estCode;
   string venue, checkInDate, checkInTime;
   string depName[10];
-  bool isConfirm = false; bool isValidVenue = false; bool isValidDep = false;
+  bool isConfirm = false; bool isValidVenue = false;
 
   Establishment* est;
   est = getEstList();
@@ -698,7 +698,8 @@ void checkIn(){
       displayDependants();
 
       do{
-        cout << "Keyin the amount of dependants: ";
+         bool isValidDep = false; bool NoDep = false;
+         cout << "Keyin the amount of dependants: ";
 
           do{
             cin >> userOption ;
@@ -710,8 +711,12 @@ void checkIn(){
               cout << "Please insert Integer!" << endl;
               cout << "Keyin the amount of dependants: ";
             }else {
+              // User Option > amount of dependants 
               if ((userOption-1) <= rear){
                 isValidDep = true;
+              } else if ((userOption-1) <= 0) {
+                NoDep = true;
+                break;
               } else {
                 cout << "You only have " << (rear+1) << " dependant(s)!" << endl;
                 cout << "Keyin the amount of dependants: ";
@@ -719,59 +724,62 @@ void checkIn(){
             }
           }while(!(isValidDep == true));
 
-        int arrDepVisited[userOption]; bool isNew = true;  int x = 0; 
+          if (NoDep == true) {
+            system("cls");
+            break;
+          } else {
+            int arrDepVisited[userOption]; bool isNew = true;  int x = 0; 
 
-        for (int i = 0; i < userOption; i++){
+            for (int i = 0; i < userOption; i++){
 
-          cout << "Dependant " << i+1 << ": ";
-          cin >> userOption2;
-          cin.ignore(numeric_limits<streamsize>::max(), '\n');
+              cout << "Dependant " << i+1 << ": ";
+              cin >> userOption2;
+              cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-          int selectedDep = userOption2 - 1;
+              int selectedDep = userOption2 - 1;
 
-          while(x < i) {
-            if (arrDepVisited[x] == selectedDep) {
-              isNew = false;
-              cout << "Index " << selectedDep + 1 << " dependant has already selected" << endl;
-              cout << "RE-enter with ANOTHER dependants again!" << endl;
-              cout << "---------------------------------------------------" << endl;
-              i--;
-              x--;
+              while(x < i) {
+                if (arrDepVisited[x] == selectedDep) {
+                  isNew = false;
+                  cout << "Index " << selectedDep + 1 << " dependant has already selected" << endl;
+                  cout << "RE-enter with ANOTHER dependants again!" << endl;
+                  cout << "---------------------------------------------------" << endl;
+                  i--;
+                  x--;
+                }
+                x++;
+              } 
+
+              if (isNew){
+                arrDepVisited[i] = selectedDep;
+              }
+              isNew = true;
             }
-            x++;
-          } 
+      
+            for (int n = 0; n < userOption; n++) {
+              cout << "You are with " << dep[arrDepVisited[n]].depDetails.name << "." << endl;
+            }
+            
+            cout << "-----------------------------" << endl;
+            cout << "Is this information correct?" << endl;
+            cout << "(Yes: Y // No: N)" << endl; 
+            char input2 = ' ';
+            cin >> input2;
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-          if (isNew){
-            arrDepVisited[i] = selectedDep;
+            if (input2 == 'Y' || input2 == 'y'){
+              isConfirm = true;
+              for (int n = 0; n < userOption; n++) {
+                depName[n] = dep[arrDepVisited[n]].depDetails.name;
+              }
+              system("cls");
+            }  
           }
-          isNew = true;
-        }
-  
-        for (int n = 0; n < userOption; n++) {
-          cout << "You are with " << dep[arrDepVisited[n]].depDetails.name << "." << endl;
-        }
-        
-        cout << "-----------------------------" << endl;
-        cout << "Is this information correct?" << endl;
-        cout << "(Yes: Y // No: N)" << endl; 
-        char input2 = ' ';
-        cin >> input2;
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-        if (input2 == 'Y' || input2 == 'y'){
-          isConfirm = true;
-          for (int n = 0; n < userOption; n++) {
-            depName[n] = dep[arrDepVisited[n]].depDetails.name;
-          }
-          system("cls");
-
-        }
       } while (!(isConfirm == true));
     }
   }
 
   displayEst();
-
   cout << "Insert Venue Code: "; 
 
   do{
