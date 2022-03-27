@@ -731,7 +731,7 @@ void checkIn(){
             int arrDepVisited[userOption]; bool isNew = true;  int x = 0; 
 
             for (int i = 0; i < userOption; i++){
-
+              x=0;
               cout << "Dependant " << i+1 << ": ";
               cin >> userOption2;
               cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -745,7 +745,6 @@ void checkIn(){
                   cout << "RE-enter with ANOTHER dependants again!" << endl;
                   cout << "---------------------------------------------------" << endl;
                   i--;
-                  x--;
                 }
                 x++;
               } 
