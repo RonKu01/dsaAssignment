@@ -46,19 +46,16 @@ struct History{
   History* nxtHistory;
 } *top;
 
-// Single Variable for individual
 Individual indi;
+Individual red;
+Individual blue;
+Individual green;
+Individual pink;
 
-// Queue Array - Dependants
 Dependants dep[10];
 int n = 10, front = - 1, rear = - 1;
 int numberOfDependants = 0;
 
-//Individual Declaration for graph
-// Individual red;
-// Individual blue;
-// Individual green;
-// Individual pink;
 
 bool is_email_valid(const string& email)
 {
@@ -95,14 +92,14 @@ Establishment* getEstList(){
   static Establishment estList[10];
 
   int i = 0;
-  ifstream input("establishment.txt");
-  while( input >> est.code >> est.venue)
+  ifstream file("establishment.txt");
+  while( file >> est.code >> est.venue)
   {
     estList[i].code = est.code;
     estList[i].venue = est.venue;
     i++;
   }
-  input.close();
+  file.close();
   return estList;
 }
 
@@ -303,7 +300,6 @@ void addDependants() {
         }
         dep[front].depDetails.gender = gender;
 
-        
         cout << "---------------------------------" << endl; 
         cout << "          Relationship           " << endl;
         cout << "---------------------------------" << endl;
@@ -541,8 +537,6 @@ void addDependants() {
 }
 
 void deleteDependants(){
-  //Remove Dependants, bring forward
-
    if (front == - 1) {
      system("cls");
      cout << "-------------------------------" << endl;
@@ -550,48 +544,56 @@ void deleteDependants(){
      cout << "-------------------------------" << endl;
    }else {
       int depDelete;
-     
-      displayDependants();
       do{
+        displayDependants();
         cout << "--------------------------------------" << endl;
         cout << "Which dependant do you want to delete?" << endl;
         cout << "Note: Enter -1 to go back             " << endl;
         cout << "--------------------------------------" << endl;
         cout << "Number: "; 
         cin >> depDelete;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-        if(depDelete == -1)
-        {
-          system("cls");
-          break;
-        }else
-        {
-          int selectedDep = depDelete - 1;
-          if (selectedDep > rear) {
-            cout << "Please only enter valid dependant Number!" << endl;
-          } else {
-
-            for(int i=selectedDep; i<rear; i++) {
-              dep[i].depDetails.name = dep[i+1].depDetails.name;
-              dep[i].depDetails.icPassport = dep[i+1].depDetails.icPassport;
-              dep[i].depDetails.address = dep[i+1].depDetails.address;
-              dep[i].depDetails.gender = dep[i+1].depDetails.gender;
-              dep[i].relation = dep[i+1].relation;
-              dep[i].depDetails.age = dep[i+1].depDetails.age;
-            }
-
+        if(cin.fail()){
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
             system("cls");
-            cout << "--------------------------------------" << endl;
-            cout << "Delete Succesfully!                   " << endl;
-            cout << "--------------------------------------" << endl;
-            rear--;
+            cout << "---------------------------" << endl;
+            cout << "Err : Please insert number! " << endl;
+            cout << "---------------------------" << endl; 
+        } else {
+            if(depDelete == -1)
+            {
+              system("cls");
+              break;
+            } else {
+              int selectedDep = depDelete - 1;
+              if (selectedDep > rear) {
+                cout << "Please only enter valid dependant Number!" << endl;
+              } else {
 
-            if (rear == -1) {
-              front = -1;
+                for(int i=selectedDep; i<rear; i++) {
+                  dep[i].depDetails.name = dep[i+1].depDetails.name;
+                  dep[i].depDetails.icPassport = dep[i+1].depDetails.icPassport;
+                  dep[i].depDetails.address = dep[i+1].depDetails.address;
+                  dep[i].depDetails.gender = dep[i+1].depDetails.gender;
+                  dep[i].relation = dep[i+1].relation;
+                  dep[i].depDetails.age = dep[i+1].depDetails.age;
+                }
+
+                system("cls");
+                cout << "--------------------------------------" << endl;
+                cout << "Delete Succesfully!                   " << endl;
+                cout << "--------------------------------------" << endl;
+                rear--;
+
+                if (rear == -1) {
+                  front = -1;
+                }
+                
+                break;
+              }
             }
-            
-            break;
-          }
         }
       }while(!(depDelete == -1));
    }
