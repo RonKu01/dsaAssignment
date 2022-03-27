@@ -736,23 +736,31 @@ void checkIn(){
               cin >> userOption2;
               cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-              int selectedDep = userOption2 - 1;
+              if (cin.fail()){
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                system("cls");
+                i--;
+                cout << "Please insert Dependant Index!" << endl;
+              } else {
+                int selectedDep = userOption2 - 1;
 
-              while(x < i) {
-                if (arrDepVisited[x] == selectedDep) {
-                  isNew = false;
-                  cout << "Index " << selectedDep + 1 << " dependant has already selected" << endl;
-                  cout << "RE-enter with ANOTHER dependants again!" << endl;
-                  cout << "---------------------------------------------------" << endl;
-                  i--;
+                while(x < i) {
+                  if (arrDepVisited[x] == selectedDep) {
+                    isNew = false;
+                    cout << "Index " << selectedDep + 1 << " dependant has already selected" << endl;
+                    cout << "RE-enter with ANOTHER dependants again!" << endl;
+                    cout << "---------------------------------------------------" << endl;
+                    i--;
+                  }
+                  x++;
+                } 
+
+                if (isNew){
+                  arrDepVisited[i] = selectedDep;
                 }
-                x++;
-              } 
-
-              if (isNew){
-                arrDepVisited[i] = selectedDep;
+                isNew = true;
               }
-              isNew = true;
             }
       
             for (int n = 0; n < userOption; n++) {
