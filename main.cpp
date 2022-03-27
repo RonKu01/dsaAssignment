@@ -787,7 +787,9 @@ void checkIn(){
   }
 
   displayEst();
+  cout << "(Press -1 to cancel login) "; 
   cout << "Insert Venue Code: "; 
+
 
   do{
     cin >> userOption3;
@@ -798,16 +800,20 @@ void checkIn(){
       cin.ignore(numeric_limits<streamsize>::max(), '\n');
       system("cls");
       displayEst();
+      cout << "(Press -1 to cancel login) "; 
       cout << "Please insert Venue Index!" << endl;
-      cout << "Insert Venue Code: ";
     }else {
       if (userOption3 >= 101 && userOption3 <= 110){
         isValidVenue = true;
       } else {
-        system("cls");
-        displayEst();
-        cout << "Please insert valid Venue" << endl;
-        cout << "Insert Venue Code: ";
+        if (userOption3 == -1){
+          return;
+        } else {
+          system("cls");
+          displayEst();
+          cout << "Please insert valid Venue" << endl;
+          cout << "Insert Venue Code: ";
+        }
       }
     } 
   }while(!(isValidVenue == true));
