@@ -1107,9 +1107,15 @@ void indiFunction(){
 
     cin >> userOption;
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    system("cls");
 
-    switch(userOption)
+    if (cin.fail()){
+      cin.clear();
+      cin.ignore(numeric_limits<streamsize>::max(), '\n');
+      system("cls");
+      cout << "Please only key in 1, 2, 3, 4, or 5" << endl;   
+    } else {
+      system("cls");
+      switch(userOption)
       {
         case 1 : updateProfile(); break;
         case 2 : manageDependants();  break;
@@ -1120,6 +1126,7 @@ void indiFunction(){
           cout << "Please only key in 1, 2, 3, 4, or 5" << endl;   
           break;
       }
+    }
   } while (!(userOption == 5));
 
   system("cls");
