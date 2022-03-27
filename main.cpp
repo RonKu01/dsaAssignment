@@ -120,6 +120,21 @@ void displayProfile(){
   cout << "Risk Status : " << indi.riskStat << endl;
 }
 
+void displayEst() {
+
+  Establishment* est;
+  est = getEstList();
+
+  cout << "----------------" << endl;
+  cout << "   Venue List   " << endl;
+  cout << "----------------" << endl;
+  
+  for (int i=0; i <10; i ++){
+    cout << est[i].code << "   " << est[i].venue << endl;
+  }
+  cout << "----------------" << endl;
+}
+
 void updateProfile(){
   
   int userOption; string email; string phoneNumber;
@@ -132,7 +147,7 @@ void updateProfile(){
     cout << "1) Email                         " << endl;
     cout << "2) Phone Number                  " << endl;
     cout << "3) Address                       " << endl;
-    cout << "4) Exit                          " << endl;
+    cout << "4) Return to Home Page           " << endl;
     cout << "---------------------------------" << endl; 
     cout << "Input: ";
     
@@ -228,7 +243,7 @@ void displayDependants(){
 }
 
 void addDependants() {
-  string depIcPassport; 
+  string depIcPassport, gender; 
   char depGender;
   int userInput, depAge;
   bool isValidAge = false;
@@ -277,12 +292,12 @@ void addDependants() {
         }
 
         if (depGender == 'M' || depGender == 'm'){
-          indi.userDetails.gender = "Male";
+          gender = "Male";
         } else 
           if (depGender == 'F' || depGender == 'f'){
-          indi.userDetails.gender = "Female";
+          gender = "Female";
         }
-        dep[front].depDetails.gender = depGender;
+        dep[front].depDetails.gender = gender;
 
         
         cout << "---------------------------------" << endl; 
@@ -337,25 +352,26 @@ void addDependants() {
         
         
       cout << "Dependants Age: ";
-      do{
-        cin >> depAge;
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        
-        if(cin.fail()){
-          cin.clear();
-          cout << "Please insert integer!" << endl;
+        do{
+          cin >> depAge;
           cin.ignore(numeric_limits<streamsize>::max(), '\n');
-          cout << "Dependants Age: ";
-        }else if (depAge < 0 && depAge > 120){
-          cin.clear();
-          cout << "Invalid Age" << endl;
-          cout << "Please insert again: ";
-        } else {
-          isValidAge = true;
-        }
-      }while(!(isValidAge == true));
+          
+          if(cin.fail()){
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Please insert integer!" << endl;
+            cout << "Dependants Age: ";
+          }else {
+            if (depAge >= 0 && depAge <= 120){
+              isValidAge = true;
+            } else {
+              cout << "Invalid Age!" << endl;
+              cout << "Please insert again: ";
+            }
+          } 
+        }while(!(isValidAge == true));
         
-      dep[front].age = depAge;
+        dep[front].age = depAge;
     
         dep[rear].depDetails.name = dep[front].depDetails.name;
         dep[rear].depDetails.icPassport = dep[front].depDetails.icPassport;
@@ -380,15 +396,15 @@ void addDependants() {
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
         while(!is_icPassport_valid(depIcPassport)) {
-            cout << "-----------------------------------" << endl;
-            cout << "      Invalid IC Passport          " << endl;
-            cout << "      Format '000000-00-0000'      " << endl; 
-            cout << "-----------------------------------" << endl;
-            cout << "Please insert correct IC Passport: ";
-            cin.clear();
-            cin >> depIcPassport;
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-          }
+          cout << "-----------------------------------" << endl;
+          cout << "      Invalid IC Passport          " << endl;
+          cout << "      Format '000000-00-0000'      " << endl; 
+          cout << "-----------------------------------" << endl;
+          cout << "Please insert correct IC Passport: ";
+          cin.clear();
+          cin >> depIcPassport;
+          cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
 
         dep[rear].depDetails.icPassport = depIcPassport;
 
@@ -410,13 +426,13 @@ void addDependants() {
         }
 
         if (depGender == 'M' || depGender == 'm'){
-          indi.userDetails.gender = "Male";
+          gender = "Male";
         } else 
           if (depGender == 'F' || depGender == 'f'){
-          indi.userDetails.gender = "Female";
+          gender = "Female";
         }
         
-        dep[rear].depDetails.gender = depGender;
+        dep[rear].depDetails.gender = gender;
 
         cout << "---------------------------------" << endl; 
         cout << "          Relationship           " << endl;
@@ -467,26 +483,27 @@ void addDependants() {
         }
 
         cout << "Dependants Age: ";
-      do{
-        cin >> depAge;
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        
-        if(cin.fail()){
-          cin.clear();
-          cout << "Please insert integer!" << endl;
+        do{
+          cin >> depAge;
           cin.ignore(numeric_limits<streamsize>::max(), '\n');
-          cout << "Dependants Age: ";
-        }else if (depAge < 0 && depAge > 120){
-          cin.clear();
-          cout << "Invalid Age" << endl;
-          cout << "Please insert again: ";
-        } else {
-          isValidAge = true;
-        }
-      }while(!(isValidAge == true));
-        
+          
+          if(cin.fail()){
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Please insert integer!" << endl;
+            cout << "Dependants Age: ";
+          }else {
+            if (depAge >= 0 && depAge <= 120){
+              isValidAge = true;
+            } else {
+              cout << "Invalid Age!" << endl;
+              cout << "Please insert again: ";
+            }
+          } 
+        }while(!(isValidAge == true));
         
         dep[rear].age = depAge;
+
         system("cls");
 
         cout << "-------------------------------" << endl;
@@ -556,7 +573,6 @@ void deleteDependants(){
 void manageDependants(){
 
   int userOption2;
-  
   displayDependants();
   
   do{
@@ -586,7 +602,7 @@ void manageDependants(){
 }
 
 void pushHistory
-(
+( 
   int estCode,
   string venue,
   string indiName,
@@ -596,7 +612,6 @@ void pushHistory
   string risk,
   string date, 
   string time
-
 ){
   History* nHistory = new History;
 
@@ -627,7 +642,7 @@ void checkIn(){
   int estCode;
   string venue, checkInDate, checkInTime;
   string depName[10];
-  bool isConfirm = false; 
+  bool isConfirm = false; bool isValidVenue = false; bool isValidDep = false;
 
   Establishment* est;
   est = getEstList();
@@ -636,7 +651,7 @@ void checkIn(){
 
     cout << "Do you have dependants with you?" << endl;
     cout << "--------------------------------" << endl;
-    cout << "(Yes: Y // No: N)" << endl; 
+    cout << "(Yes: Y // No: Press Any Key (Except Y) to continue)" << endl; 
 
     char input = ' ';
     cin >> input;
@@ -648,8 +663,26 @@ void checkIn(){
 
       do{
         cout << "Keyin the amount of dependants: ";
-        cin >> userOption ;
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+          do{
+            cin >> userOption ;
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+            if(cin.fail()){
+              cin.clear();
+              cin.ignore(numeric_limits<streamsize>::max(), '\n');
+              cout << "Please insert Integer!" << endl;
+              cout << "Keyin the amount of dependants: ";
+            }else {
+              if ((userOption-1) <= rear){
+                isValidDep = true;
+              } else {
+                cout << "You only have " << (rear+1) << " dependant(s)!" << endl;
+                cout << "Keyin the amount of dependants: ";
+              }
+            }
+          }while(!(isValidDep == true));
+
         int arrDepVisited[userOption]; bool isNew = true;  int x = 0; 
 
         for (int i = 0; i < userOption; i++){
@@ -701,21 +734,32 @@ void checkIn(){
     }
   }
 
-  // Display est venue (DONE)
-  cout << "----------------" << endl;
-  cout << "   Venue List   " << endl;
-  cout << "----------------" << endl;
-  
-  for (int i=0; i <10; i ++){
-    cout << est[i].code << "   " << est[i].venue << endl;
-  }
-  
-  cout << "----------------" << endl;
+  displayEst();
 
-  //Check In - Enter Code (Need validation)
   cout << "Insert Venue Code: "; 
-  cin >> userOption3;
-  cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
+
+  do{
+    cin >> userOption3;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
+    
+    if(cin.fail()){
+      cin.clear();
+      cin.ignore(numeric_limits<streamsize>::max(), '\n');
+      system("cls");
+      displayEst();
+      cout << "Please insert Venue Index!" << endl;
+      cout << "Insert Venue Code: ";
+    }else {
+      if (userOption3 >= 101 && userOption3 <= 110){
+        isValidVenue = true;
+      } else {
+        system("cls");
+        displayEst();
+        cout << "Please insert valid Venue" << endl;
+        cout << "Insert Venue Code: ";
+      }
+    } 
+  }while(!(isValidVenue == true));
 
   for (int i = 0; i < 10; i ++){
     if (userOption3 == (*(est + i)).code) {
@@ -754,11 +798,7 @@ void checkIn(){
     }
   }
 
- 
-
-
   pushHistory(estCode, venue, indi.userDetails.name, depName, userOption, indi.vacDetails, indi.riskStat, checkInDate, checkInTime);
-
 }
 
 void displayHistoryList() {
@@ -929,7 +969,6 @@ void indiFunction(){
     indi.vacDetails = "Fully";
   }
   
-  
   cout << "---------------------------------" << endl; 
   cout << "           Risk Status           " << endl;
   cout << "---------------------------------" << endl; 
@@ -968,6 +1007,8 @@ void indiFunction(){
   do 
   {
     cout << "---------------------------------" << endl; 
+    cout << "            Home Page            " << endl; 
+    cout << "---------------------------------" << endl; 
     cout << "Please insert options to continue" << endl;
     cout << "1) Update Individual Profile     " << endl;
     cout << "2) Manage Dependants             " << endl;
@@ -983,7 +1024,7 @@ void indiFunction(){
     switch(userOption)
       {
         case 1 : updateProfile(); break;
-        case 2 : manageDependants(); system("cls"); break;
+        case 2 : manageDependants();  break;
         case 3 : checkIn(); break;
         case 4 : displayHistoryList(); break;
         case 5 : break;
@@ -1007,7 +1048,7 @@ int main() {
   cout << "     WELCOME TO MYSEJAHTERA    " << endl;
   cout << "-------------------------------" << endl;
   
-   do 
+  do 
   {
     cout << "-------------------------------" << endl; 
     cout << "Please insert options to LOGIN " << endl;
