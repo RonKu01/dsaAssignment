@@ -14,6 +14,7 @@ struct User{
   string name;
   string address;
   string gender;
+  int age; 
 };
 
 struct Individual{
@@ -28,7 +29,6 @@ struct Individual{
 struct Dependants{
   User depDetails;
   string relation;
-  int age;
 };
 
 struct Establishment{
@@ -114,6 +114,7 @@ void displayProfile(){
   cout << "IC/Passport : " << indi.userDetails.icPassport << endl;
   cout << "Address     : " << indi.userDetails.address << endl;
   cout << "Gender      : " << indi.userDetails.gender << endl;
+  cout << "Age         : " << indi.userDetails.age << endl;
   cout << "Email       : " << indi.email << endl;
   cout << "Phone Num   : " << indi.phoneNum << endl;
   cout << "Vaccination : " << indi.vacDetails << endl;
@@ -215,17 +216,19 @@ void displayDependants(){
 
   // Queue is Empty
   if (front == -1){
-    cout << "-------------------------------" << endl;
-    cout << "You do not have any dependants!" << endl;
-    cout << "-------------------------------" << endl;
+    cout << "----------------------------------------------------" << endl;
+    cout << "          You do not have any dependants!           " << endl;
+    cout << "----------------------------------------------------" << endl;
   } else 
     
   // Display List of Dependant
   { 
     system("cls");
-    cout << "-------------------------------" << endl;
-    cout << "        Dependants List        " << endl;
-    cout << "-------------------------------" << endl;
+    cout << "----------------------------------------------------" << endl;
+    cout << "                   Dependants List                  " << endl;
+    cout << "----------------------------------------------------" << endl;
+    cout << "No ""\t""Name""\t""IC Passport""\t""Address""\t""Gender""\t""Dependants""\t""Age" << endl; 
+
     
     for (int i = 0; i <= rear; i++) {
       cout << i+1 << "  " 
@@ -234,7 +237,7 @@ void displayDependants(){
            << dep[i].depDetails.address << "  "
            << dep[i].depDetails.gender << "  " 
            << dep[i].relation << "  " 
-           << dep[i].age << "  "
+           << dep[i].depDetails.age << "  "
            << endl;
     }
 
@@ -247,6 +250,7 @@ void addDependants() {
   char depGender;
   int userInput, depAge;
   bool isValidAge = false;
+  bool isValidDep = false; 
 
    if (rear == n - 1)
      cout<<"Failed : Reached Maximum Dependants (10)"<<endl;
@@ -313,43 +317,58 @@ void addDependants() {
         cout << "7) Others                        " << endl;
         cout << "---------------------------------" << endl;
         cout << "Input: ";
-        cin >> userInput;
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
        
-        while(userInput != 1 && userInput !=2 && userInput !=3 && userInput !=4 && userInput !=5 && userInput !=6 && userInput !=7){
-          cin.clear();
-          cout << "----------------------------------" << endl;
-          cout << "   Fail! Please Reselect Again!   " << endl;
-          cout << "----------------------------------" << endl;
-          cout << "Input: ";
+       do{
           cin >> userInput;
           cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        }
-      
-        if(userInput == 1){
-          dep[front].relation = "Spouse";
-        }
-        else if(userInput == 2){
-          dep[front].relation = "Child";
-        }
-        else if(userInput == 3){
-          dep[front].relation = "Siblings";
-        }
-        else if(userInput == 4){
-          dep[front].relation = "Parents / Parents-in-law";
-        }
-        else if(userInput == 5){
-          dep[front].relation = "Grandparents";
-        }
-        else if(userInput == 6){
-          dep[front].relation = "Guardian";
-        }
-        else if(userInput == 7){
-          dep[front].relation = "Others";
-        }
-        
-        
+
+          if(cin.fail()){
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "---------------------------" << endl;
+            cout << "Please insert number only! " << endl;
+            cout << "---------------------------" << endl; 
+            cout << "Input: ";
+          }else{
+                if(userInput == 1){
+                  dep[front].relation = "Spouse";
+                  isValidDep = true;
+                }
+                else if(userInput == 2){
+                  dep[front].relation = "Child";
+                  isValidDep = true;
+                }
+                else if(userInput == 3){
+                  dep[front].relation = "Siblings";
+                  isValidDep = true;
+                }
+                else if(userInput == 4){
+                  dep[front].relation = "Parents / Parents-in-law";
+                  isValidDep = true;
+                }
+                else if(userInput == 5){
+                  dep[front].relation = "Grandparents";
+                  isValidDep = true;
+                }
+                else if(userInput == 6){
+                  dep[front].relation = "Guardian";
+                  isValidDep = true;
+                }
+                else if(userInput == 7){
+                  dep[front].relation = "Others";
+                  isValidDep = true;
+                }
+                else if(userInput != 1 && userInput !=2 && userInput !=3 && userInput !=4 && userInput !=5 && userInput !=6 && userInput !=7){
+                  cin.clear();
+                  cout << "----------------------------------" << endl;
+                  cout << "   Fail! Please Reselect Again!   " << endl;
+                  cout << "----------------------------------" << endl;
+                  cout << "Input: ";
+                  cin >> userInput;
+                  cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
+                }
+            } 
+       }while(!(isValidDep == true));       
         
       cout << "Dependants Age: ";
         do{
@@ -359,26 +378,30 @@ void addDependants() {
           if(cin.fail()){
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cout << "Please insert integer!" << endl;
+            cout << "---------------------------" << endl;
+            cout << "Please insert number only! " << endl;
+            cout << "---------------------------" << endl;
             cout << "Dependants Age: ";
           }else {
             if (depAge >= 0 && depAge <= 120){
               isValidAge = true;
             } else {
-              cout << "Invalid Age!" << endl;
+              cout << "---------------------------" << endl;
+              cout << "        Invalid Age!       " << endl;
+              cout << "---------------------------" << endl; 
               cout << "Please insert again: ";
             }
           } 
         }while(!(isValidAge == true));
         
-        dep[front].age = depAge;
+        dep[front].depDetails.age = depAge;
     
         dep[rear].depDetails.name = dep[front].depDetails.name;
         dep[rear].depDetails.icPassport = dep[front].depDetails.icPassport;
         dep[rear].depDetails.address = dep[front].depDetails.address;
         dep[rear].depDetails.gender = dep[front].depDetails.gender;
         dep[rear].relation = dep[front].relation;
-        dep[rear].age = dep[front].age;
+        dep[rear].depDetails.age = dep[front].depDetails.age;
 
         
         system("cls");
@@ -490,19 +513,23 @@ void addDependants() {
           if(cin.fail()){
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cout << "Please insert integer!" << endl;
+            cout << "---------------------------" << endl;
+            cout << "Please insert number only! " << endl;
+            cout << "---------------------------" << endl; 
             cout << "Dependants Age: ";
           }else {
             if (depAge >= 0 && depAge <= 120){
               isValidAge = true;
             } else {
-              cout << "Invalid Age!" << endl;
+              cout << "---------------------------" << endl;
+              cout << "        Invalid Age!       " << endl;
+              cout << "---------------------------" << endl; 
               cout << "Please insert again: ";
             }
           } 
         }while(!(isValidAge == true));
         
-        dep[rear].age = depAge;
+        dep[rear].depDetails.age = depAge;
 
         system("cls");
 
@@ -550,7 +577,7 @@ void deleteDependants(){
               dep[i].depDetails.address = dep[i+1].depDetails.address;
               dep[i].depDetails.gender = dep[i+1].depDetails.gender;
               dep[i].relation = dep[i+1].relation;
-              dep[i].age = dep[i+1].age;
+              dep[i].depDetails.age = dep[i+1].depDetails.age;
             }
 
             system("cls");
@@ -848,9 +875,10 @@ void adminFunction(){
 }
 
 void indiFunction(){
-  int userOption, userInput;
+  int userOption, userInput, age;
   string icPassport, email, phoneNumber; 
   char gender;
+  bool isValidAge, isValidVaccine, isValidRisk = false;
   
   cout << "-------------------------------" << endl;
   cout << "       Register Account        " << endl;
@@ -901,6 +929,33 @@ void indiFunction(){
     indi.userDetails.gender = "Female";
   }
   
+  cout << "Age : ";
+  do{
+    cin >> age;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+    if(cin.fail()){
+      cin.clear();
+      cin.ignore(numeric_limits<streamsize>::max(), '\n');
+      cout << "---------------------------" << endl;
+      cout << "Please insert number only! " << endl;
+      cout << "---------------------------" << endl; 
+      cout << "Input: ";
+    }else{
+      if (age >=0 && age <= 120){
+        isValidAge = true;
+      }
+      else{
+        cout << "---------------------------" << endl;
+        cout << "        Invalid Age!       " << endl;
+        cout << "---------------------------" << endl; 
+        cout << "Input: ";
+      }
+    }
+  }while(!(isValidAge == true));
+  
+  indi.userDetails.age = age;
+
   cout << "Email : ";
   cin >> email;
   cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -944,30 +999,42 @@ void indiFunction(){
   cout << "3) Fully                         " << endl;
   cout << "---------------------------------" << endl; 
   cout << "Please select Vaccination Status: ";
-  cin >> userInput;
-  cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-  while(userInput != 1 && userInput != 2 && userInput != 3){
-    cin.clear();
-    cout << "----------------------------------" << endl;
-    cout << "Fail! Please Only Enter 1/ 2/ 3!  " << endl;
-    cout << "----------------------------------" << endl;
-    cout << "Please select Vaccination Status: ";
+  do{
     cin >> userInput;
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
-  }
 
-  if (userInput == 1){
-    indi.vacDetails = "Never";
-  }
-  else if(userInput == 2)
-  {
-    indi.vacDetails = "Partial";
-  }
-  else if(userInput == 3)
-  {
-    indi.vacDetails = "Fully";
-  }
+    if(cin.fail()){
+      cin.clear();
+      cin.ignore(numeric_limits<streamsize>::max(), '\n');
+      cout << "---------------------------" << endl;
+      cout << "Please insert number only! " << endl;
+      cout << "---------------------------" << endl; 
+      cout << "Input: ";
+    }else{
+      if (userInput == 1){
+        indi.vacDetails = "Never";
+        isValidVaccine = true;
+      }
+      else if(userInput == 2)
+      {
+        indi.vacDetails = "Partial";
+        isValidVaccine = true;
+      }
+      else if(userInput == 3)
+      {
+        indi.vacDetails = "Fully";
+        isValidVaccine = true;
+      }
+      else if(userInput != 1 && userInput != 2 && userInput != 3){
+        cin.clear();
+        cout << "----------------------------------" << endl;
+        cout << "Fail! Please Only Enter 1/ 2/ 3!  " << endl;
+        cout << "----------------------------------" << endl;
+        cout << "Input: ";
+      }
+    }
+  }while(!(isValidVaccine == true));
   
   cout << "---------------------------------" << endl; 
   cout << "           Risk Status           " << endl;
@@ -977,26 +1044,38 @@ void indiFunction(){
   cout << "2) High                          " << endl;
   cout << "---------------------------------" << endl; 
   cout << "Please select Risk Status: ";
-  cin >> userInput;
-  cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-  while(userInput != 1 && userInput != 2){
-    cin.clear();
-    cout << "----------------------------------" << endl;
-    cout << "Fail! Please Only Enter 1 or 2!   " << endl;
-    cout << "----------------------------------" << endl;
-    cout << "Please select Risk Status: ";
+  do{
     cin >> userInput;
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
-  }
 
-  if (userInput == 1){
-    indi.riskStat = "Low";
-  }
-  else if(userInput == 2)
-  {
-    indi.riskStat = "High";
-  }
+    if(cin.fail()){
+      cin.clear();
+      cin.ignore(numeric_limits<streamsize>::max(), '\n');
+      cout << "---------------------------" << endl;
+      cout << "Please insert number only! " << endl;
+      cout << "---------------------------" << endl; 
+      cout << "Input: ";
+    }else{
+      if (userInput == 1){
+        indi.riskStat = "Low";
+        isValidRisk = true;
+      }
+      else if(userInput == 2)
+      {
+        indi.riskStat = "High";
+        isValidRisk = true;
+      }
+      else if(userInput != 1 && userInput != 2){
+        cin.clear();
+        cout << "----------------------------------" << endl;
+        cout << "Fail! Please Only Enter 1 or 2!   " << endl;
+        cout << "----------------------------------" << endl;
+        cout << "Input: ";
+      }
+    }
+
+  }while(!(isValidRisk == true));
   system("cls");
 
   cout << "--------------------------------" << endl; 
@@ -1068,7 +1147,9 @@ int main() {
         case 2 : adminFunction(); break;
         case 3 : break;
         default:
-          cout << "Please only key in 1 or 2" << endl;   
+          cout << "-----------------------------" << endl; 
+          cout << "Please only key in 1, 2 or 3!" << endl;   
+          cout << "-----------------------------" << endl; 
           break;
       }
   } while (!(userLogin == 3));
