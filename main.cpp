@@ -616,15 +616,22 @@ void manageDependants(){
     cin >> userOption2;
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
     
-    switch(userOption2) 
-    {
-      case 1 : { addDependants(); break; }
-      case 2 : { displayDependants(); break; }
-      case 3 : { deleteDependants(); break; }
-      case 4 : { cout << "Return to Home Page" << endl; break; } 
-      default: {
-        cout << "Please only key in 1, 2, 3, or 4" << endl;   
-        break;
+    if(cin.fail()){
+      cin.clear();
+      cin.ignore(numeric_limits<streamsize>::max(), '\n');
+      system("cls");
+      cout << "Please only key in 1, 2, 3, or 4" << endl;
+    } else {
+      switch(userOption2) 
+      {
+        case 1 : { addDependants(); break; }
+        case 2 : { displayDependants(); break; }
+        case 3 : { deleteDependants(); break; }
+        case 4 : { cout << "Return to Home Page" << endl; break; } 
+        default: {
+          cout << "Please only key in 1, 2, 3, or 4" << endl;   
+          break;
+        }
       }
     }
   }while(!(userOption2 == 4));
@@ -1141,9 +1148,16 @@ int main() {
     cin >> userLogin;
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
     
-    system("cls");
-
-    switch(userLogin)
+    if(cin.fail()){
+      cin.clear();
+      cin.ignore(numeric_limits<streamsize>::max(), '\n');
+      system("cls");
+      cout << "-----------------------------" << endl; 
+      cout << "Please only key in 1, 2 or 3!" << endl;   
+      cout << "-----------------------------" << endl;    
+    } else {
+      system("cls");
+      switch(userLogin)
       {
         case 1 : indiFunction(); break;
         case 2 : adminFunction(); break;
@@ -1154,6 +1168,8 @@ int main() {
           cout << "-----------------------------" << endl; 
           break;
       }
+    }
+
   } while (!(userLogin == 3));
 
   cout << "--------------------------------------" << endl;
