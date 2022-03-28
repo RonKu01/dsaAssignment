@@ -31,6 +31,7 @@ struct Dependants{
   string relation;
 };
 
+
 struct Establishment{
   int code;
   string venue;
@@ -46,16 +47,21 @@ struct History{
   History* nxtHistory;
 } *top;
 
-Individual indi;
-Individual red;
-Individual blue;
-Individual green;
-Individual pink;
+struct Person {
+  string venue;
+  string name;
+  string date;
+  string time;
+  string dependants;
+  string vacStatus;
+  string riskStatus;
+};
 
+
+Individual indi;
 Dependants dep[10];
 int n = 10, front = - 1, rear = - 1;
 int numberOfDependants = 0;
-
 
 bool is_email_valid(const string& email)
 {
@@ -898,12 +904,6 @@ void displayHistoryList() {
   }
 }; 
 
-void adminFunction(){
-  cout << "-------------------------------" << endl;
-  cout << "     WELCOME TO ADMIN PAGE     " << endl;
-  cout << "-------------------------------" << endl;
-}
-
 void indiFunction(){
   int userOption, userInput, age;
   string icPassport, email, phoneNumber; 
@@ -1156,6 +1156,191 @@ void indiFunction(){
   cout << "--------------------------------------" << endl;
 }
 
+Person* getRedHistory(){
+  Person red;
+  static Person redHistory[10];
+
+  int i = 0;
+  ifstream file("graph_red.txt");
+  while( file >> red.venue >> red.name >> red.date >> red.time >> red.dependants >> red.vacStatus >> red.riskStatus)
+  {
+    redHistory[i].venue = red.venue;
+    redHistory[i].name = red.name;
+    redHistory[i].date = red.date;
+    redHistory[i].time = red.time;
+    redHistory[i].dependants = red.dependants;
+    redHistory[i].vacStatus = red.vacStatus;
+    redHistory[i].riskStatus = red.riskStatus;
+    i++;
+  }
+  file.close();
+  return redHistory;
+}
+
+Person* getGreenHistory(){
+  Person green;
+  static Person greenHistory[10];
+
+  int i = 0;
+  ifstream file("graph_green.txt");
+  while( file >> green.venue >> green.name >> green.date >> green.time >> green.dependants >> green.vacStatus >> green.riskStatus)
+  {
+    greenHistory[i].venue = green.venue;
+    greenHistory[i].name = green.name;
+    greenHistory[i].date = green.date;
+    greenHistory[i].time = green.time;
+    greenHistory[i].dependants = green.dependants;
+    greenHistory[i].vacStatus = green.vacStatus;
+    greenHistory[i].riskStatus = green.riskStatus;
+    i++;
+  }
+  file.close();
+  return greenHistory;
+}
+
+Person* getBlueHistory(){
+  Person blue;
+  static Person blueHistory[10];
+
+  int i = 0;
+  ifstream file("graph_blue.txt");
+  while( file >> blue.venue >> blue.name >> blue.date >> blue.time >> blue.dependants >> blue.vacStatus >> blue.riskStatus)
+  {
+    blueHistory[i].venue = blue.venue;
+    blueHistory[i].name = blue.name;
+    blueHistory[i].date = blue.date;
+    blueHistory[i].time = blue.time;
+    blueHistory[i].dependants = blue.dependants;
+    blueHistory[i].vacStatus = blue.vacStatus;
+    blueHistory[i].riskStatus = blue.riskStatus;
+    i++;
+  }
+  file.close();
+  return blueHistory;
+}
+
+Person* getPinkHistory(){
+  Person pink;
+  static Person pinkHistory[10];
+
+  int i = 0;
+  ifstream file("graph_pink.txt");
+  while( file >> pink.venue >> pink.name >> pink.date >> pink.time >> pink.dependants >> pink.vacStatus >> pink.riskStatus)
+  {
+    pinkHistory[i].venue = pink.venue;
+    pinkHistory[i].name = pink.name;
+    pinkHistory[i].date = pink.date;
+    pinkHistory[i].time = pink.time;
+    pinkHistory[i].dependants = pink.dependants;
+    pinkHistory[i].vacStatus = pink.vacStatus;
+    pinkHistory[i].riskStatus = pink.riskStatus;
+    i++;
+  }
+  file.close();
+  return pinkHistory;
+}
+
+int linearSearch(Person array[], int size, string searchValue){
+ 
+  for(int i = 0; i < size; i ++){
+    int k = searchValue.compare(array[i].riskStatus);
+
+    if (k == 0){
+      return i;
+    }
+  }
+
+  return -1;
+}
+
+void adminFunction(){
+
+  Person* red; Person* green; Person* blue; Person* pink;
+  red = getRedHistory();
+  green = getGreenHistory();
+  blue = getBlueHistory();
+  pink = getPinkHistory();
+
+  for (int i=0; i <2; i ++){
+    cout << red[i].venue << "   " << red[i].name << "   " << red[i].date << "   " << red[i].time << "   " << red[i].dependants << "   " << red[i].vacStatus << "   " << red[i].riskStatus << endl;
+  }
+
+  cout << endl;
+
+  for (int i=0; i <3; i ++){
+    cout << pink[i].venue << "   " << pink[i].name << "   " << pink[i].date << "   " << pink[i].time << "   " << pink[i].dependants << "   " << pink[i].vacStatus << "   " << pink[i].riskStatus << endl;
+  }
+
+  cout << endl;
+
+  for (int i=0; i <3; i ++){
+    cout << blue[i].venue << "   " << blue[i].name << "   " << blue[i].date << "   " << blue[i].time << "   " << blue[i].dependants << "   " << blue[i].vacStatus << "   " << blue[i].riskStatus << endl;
+  }
+
+  cout << endl;
+
+  for (int i=0; i <2; i ++){
+    cout << green[i].venue << "   " << green[i].name << "   " << green[i].date << "   " << green[i].time << "   " << green[i].dependants << "   " << green[i].vacStatus << "   " << green[i].riskStatus << endl;
+  }
+
+  cout << endl;
+
+  string userValue;
+  
+  // This validation should be completed by today!
+  // do{
+  //   cout << "What are you looking for (Note: High) : " << endl;
+  //   cin >> userValue;
+  //   cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+  //   if(cin.fail()){
+  //     cin.clear();
+  //     cin.ignore(numeric_limits<streamsize>::max(), '\n');
+  //     cout << "---------------------------" << endl;
+  //     cout << "Please insert 'High' only! " << endl;
+  //     cout << "---------------------------" << endl; 
+  //     cout << "Input: ";
+  //   }else{
+
+  //     if (userValue == "High"){
+  //       indi.riskStat = "Low";
+  //       isValidRisk = true;
+  //     }
+  //     else if(userInput == 2)
+  //     {
+  //       indi.riskStat = "High";
+  //       isValidRisk = true;
+  //     }
+  //     else if(userInput != 1 && userInput != 2){
+  //       cin.clear();
+  //       cout << "----------------------------------" << endl;
+  //       cout << "Fail! Please Only Enter 1 or 2!   " << endl;
+  //       cout << "----------------------------------" << endl;
+  //       cout << "Input: ";
+  //     }
+  //   }
+
+  // }while(!(isValidRisk == true));
+
+  int result = linearSearch(red, 2, userValue);
+
+  if(result >= 0){
+    cout << "High Risk Person Found!!" << endl;
+    cout << "Person Name: " << red[result].name << endl;
+    cout << "Date: " << red[result].date << endl;
+    cout << "Time: " << red[result].time << endl;
+    cout << "Dependnts: " << red[result].dependants << endl;
+    cout << "Risk Status: " << red[result].riskStatus << endl;
+    cout << "Vac StatusL " << red[result].vacStatus << endl;
+  } else {
+    cout << "the number :" << userValue << " was not found." << endl;
+  }
+
+  cout << "-------------------------------" << endl;
+  cout << "     WELCOME TO ADMIN PAGE     " << endl;
+  cout << "-------------------------------" << endl;
+}
+
 int main() {
 
   int userLogin;
@@ -1197,7 +1382,6 @@ int main() {
           break;
       }
     }
-
   } while (!(userLogin == 3));
 
   cout << "--------------------------------------" << endl;
