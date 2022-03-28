@@ -31,7 +31,6 @@ struct Dependants{
   string relation;
 };
 
-
 struct Establishment{
   int code;
   string venue;
@@ -66,8 +65,8 @@ int numberOfDependants = 0;
 bool is_email_valid(const string& email)
 {
    // define a regular expression
-   const std::regex pattern
-      ("(\\w+)(\\.|_)?(\\w*)@(\\w+)(\\.(\\w+))+");
+    const std::regex pattern
+    ("(\\w+)(\\.|_)?(\\w*)@(\\w+)(\\.(\\w+))+");
 
    // try to match the string with the regular expression
    return std::regex_match(email, pattern);
@@ -76,8 +75,8 @@ bool is_email_valid(const string& email)
 bool is_phoneNumber_valid(const string& phoneNumber)
 {
    // define a regular expression
-   const std::regex pattern
-      ("[[:digit:]]{3}-[[:digit:]]{3}-[[:digit:]]{4}");
+    const std::regex pattern
+    ("[[:digit:]]{3}-[[:digit:]]{3}-[[:digit:]]{4}");
 
    // try to match the string with the regular expression
    return std::regex_match(phoneNumber, pattern);
@@ -86,12 +85,32 @@ bool is_phoneNumber_valid(const string& phoneNumber)
 bool is_icPassport_valid(const string& icPassport)
 {
    // define a regular expression
-   const std::regex pattern
-      ("[[:digit:]]{6}-[[:digit:]]{2}-[[:digit:]]{4}");
+    const std::regex pattern
+    ("[[:digit:]]{6}-[[:digit:]]{2}-[[:digit:]]{4}");
 
    // try to match the string with the regular expression
    return std::regex_match(icPassport, pattern);
 }
+
+bool is_date_valid(const string& date)
+{
+   // define a regular expression
+    const std::regex pattern
+    ("\\b\\d{2}[-]\\d{2}[-]\\d{4}\\b");
+
+   // try to match the string with the regular expression
+   return std::regex_match(date, pattern);
+}
+
+// bool is_time_valid(const string& time)
+// {
+//    // define a regular expression
+//     const std::regex pattern
+//     ([0-1]?[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?$;
+
+   // try to match the string with the regular expression
+//    return std::regex_match(time, pattern);
+// }
 
 Establishment* getEstList(){
   Establishment est;
@@ -1254,91 +1273,130 @@ int linearSearch(Person array[], int size, string searchValue){
 }
 
 void adminFunction(){
+  bool isValidRisk = false;
+  int userInput; 
+  string adminVenue, adminDate, adminTime; 
+
 
   Person* red; Person* green; Person* blue; Person* pink;
   red = getRedHistory();
   green = getGreenHistory();
   blue = getBlueHistory();
   pink = getPinkHistory();
+  
 
-  for (int i=0; i <2; i ++){
-    cout << red[i].venue << "   " << red[i].name << "   " << red[i].date << "   " << red[i].time << "   " << red[i].dependants << "   " << red[i].vacStatus << "   " << red[i].riskStatus << endl;
-  }
+  // cout << "----------------------------------------------------------------------------------------------------" << endl;
+  // cout << "Venue"<< "\t" << "Name" << "\t" << "Date" << "\t" "\t" << "Time" << "\t" "\t" << "Dependants" << "\t" << "Vaccination" << "\t""\t" << "Risk Status" << endl;
+  // cout << "----------------------------------------------------------------------------------------------------" << endl;
+  // for (int i=0; i <2; i ++){
+  //   cout << red[i].venue << "\t" << red[i].name << "\t" << red[i].date << "\t" << red[i].time << "\t" << red[i].dependants << "\t""\t" << red[i].vacStatus << "\t""\t" << red[i].riskStatus << endl;
+  // }
 
-  cout << endl;
+  // cout << endl;
 
-  for (int i=0; i <3; i ++){
-    cout << pink[i].venue << "   " << pink[i].name << "   " << pink[i].date << "   " << pink[i].time << "   " << pink[i].dependants << "   " << pink[i].vacStatus << "   " << pink[i].riskStatus << endl;
-  }
+  // for (int i=0; i <3; i ++){
+  //   cout << pink[i].venue << "\t" << pink[i].name << "\t" << pink[i].date << "\t" << pink[i].time << "\t" << pink[i].dependants << "\t""\t" << pink[i].vacStatus << "\t""\t" << pink[i].riskStatus << endl;
+  // }
 
-  cout << endl;
+  // cout << endl;
 
-  for (int i=0; i <3; i ++){
-    cout << blue[i].venue << "   " << blue[i].name << "   " << blue[i].date << "   " << blue[i].time << "   " << blue[i].dependants << "   " << blue[i].vacStatus << "   " << blue[i].riskStatus << endl;
-  }
+  // for (int i=0; i <3; i ++){
+  //   cout << blue[i].venue << "\t" << blue[i].name << "\t" << blue[i].date << "\t" << blue[i].time << "\t" << blue[i].dependants << "\t""\t" << blue[i].vacStatus << "\t""\t" << blue[i].riskStatus << endl;
+  // }
 
-  cout << endl;
+  // cout << endl;
 
-  for (int i=0; i <2; i ++){
-    cout << green[i].venue << "   " << green[i].name << "   " << green[i].date << "   " << green[i].time << "   " << green[i].dependants << "   " << green[i].vacStatus << "   " << green[i].riskStatus << endl;
-  }
+  // for (int i=0; i <2; i ++){
+  //   cout << green[i].venue << "\t" << green[i].name << "\t" << green[i].date << "\t" << green[i].time << "\t" << green[i].dependants << "\t""\t" << green[i].vacStatus << "\t""\t" << green[i].riskStatus << endl;
+  // }
 
-  cout << endl;
+  // cout << endl;
 
   string userValue;
   
+  cout << "-------------------------------------" << endl;
+  cout << "         WELCOME TO ADMIN PAGE       " << endl;
+  cout << "-------------------------------------" << endl;
+
   // This validation should be completed by today!
-  // do{
-  //   cout << "What are you looking for (Note: High) : " << endl;
-  //   cin >> userValue;
-  //   cin.ignore(numeric_limits<streamsize>::max(), '\n');
+  do{
+    cout << "What are you looking for (Note: High) : ";
+    cin >> userValue;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-  //   if(cin.fail()){
-  //     cin.clear();
-  //     cin.ignore(numeric_limits<streamsize>::max(), '\n');
-  //     cout << "---------------------------" << endl;
-  //     cout << "Please insert 'High' only! " << endl;
-  //     cout << "---------------------------" << endl; 
-  //     cout << "Input: ";
-  //   }else{
+    if(cin.fail()){
+      cin.clear();
+      cin.ignore(numeric_limits<streamsize>::max(), '\n');
+      cout << "---------------------------" << endl;
+      cout << "Please insert 'High' only! " << endl;
+      cout << "---------------------------" << endl; 
+      cout << "Input: ";
+    }else{
 
-  //     if (userValue == "High"){
-  //       indi.riskStat = "Low";
-  //       isValidRisk = true;
-  //     }
-  //     else if(userInput == 2)
-  //     {
-  //       indi.riskStat = "High";
-  //       isValidRisk = true;
-  //     }
-  //     else if(userInput != 1 && userInput != 2){
-  //       cin.clear();
-  //       cout << "----------------------------------" << endl;
-  //       cout << "Fail! Please Only Enter 1 or 2!   " << endl;
-  //       cout << "----------------------------------" << endl;
-  //       cout << "Input: ";
-  //     }
-  //   }
+      if (userValue == "High"){
+        indi.riskStat = "Low";
+        isValidRisk = true;
+      }
+      else if(userInput == 2)
+      {
+        indi.riskStat = "High";
+        isValidRisk = true;
+      }
+      else if(userInput != 1 && userInput != 2){
+        cin.clear();
+        cout << "----------------------------------" << endl;
+        cout << "   Please insert 'High' only!     " << endl;
+        cout << "----------------------------------" << endl;
+      }
+    }
 
-  // }while(!(isValidRisk == true));
+  }while(!(isValidRisk == true));
 
   int result = linearSearch(red, 2, userValue);
 
   if(result >= 0){
-    cout << "High Risk Person Found!!" << endl;
+    system("cls");
+    cout << "------------------------------" << endl;
+    cout << "    High Risk Person Found !  " << endl;
+    cout << "------------------------------" << endl;
     cout << "Person Name: " << red[result].name << endl;
-    cout << "Date: " << red[result].date << endl;
-    cout << "Time: " << red[result].time << endl;
-    cout << "Dependnts: " << red[result].dependants << endl;
+    cout << "Date:        " << red[result].date << endl;
+    cout << "Time:        " << red[result].time << endl;
+    cout << "Dependnts:   " << red[result].dependants << endl;
     cout << "Risk Status: " << red[result].riskStatus << endl;
-    cout << "Vac StatusL " << red[result].vacStatus << endl;
+    cout << "Vac Status:  " << red[result].vacStatus << endl;
   } else {
-    cout << "the number :" << userValue << " was not found." << endl;
+    cout << "----------------------------------" << endl;
+    cout << "Risk Status : " << userValue << " was not found." << endl;
+    cout << "----------------------------------" << endl;
   }
 
-  cout << "-------------------------------" << endl;
-  cout << "     WELCOME TO ADMIN PAGE     " << endl;
-  cout << "-------------------------------" << endl;
+  cout << "--------------------" << endl; 
+  cout << "   Insert Details   " << endl;
+  cout << "--------------------" << endl; 
+  cout << "Insert Venue: ";
+  cin >> adminVenue;
+
+
+  cout << "Insert Date : ";
+  cin >> adminDate;
+  cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+  while(!is_date_valid(adminDate)){
+    cout << "-----------------------------------" << endl;
+    cout << "           Invalid Date            " << endl;
+    cout << "        Format '00-00-0000'        " << endl; 
+    cout << "-----------------------------------" << endl;
+    cout << "Please insert correct Date: ";
+    cin.clear();
+    cin >> adminDate;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+  }
+
+
+
+  cout << "Insert Time : ";
+  cin >> adminTime;
 }
 
 int main() {
