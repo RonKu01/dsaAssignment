@@ -57,11 +57,10 @@ struct Person {
   int timeDiff;
 };
 
-
 Individual indi;
 Dependants dep[10];
 int n = 10, front = - 1, rear = - 1;
-int numberOfDependants = 0;
+int numberOfDependants = 0; int amountOfVictimHistory = 0; int amountOfContact = 0;
 
 bool is_email_valid(const string& email)
 {
@@ -1202,8 +1201,6 @@ Person* getCovidPatHistory(){
   return covidPatHistory;
 }
 
-int amountOfVictimHistory = 0; int amountOfContact = 0;
-
 Person* getVictimHistory(){
   Person victim;
   static Person victimHistory[50];
@@ -1298,12 +1295,14 @@ void adminFunction(){
   bool isHighRisk = false; bool isValidVenue = false; 
   string risk, venue, date, time; 
   int counterContactHistory = 0;
-  Person* covidPat; Person* victim; static Person contactHistory[50]; Person* sortedHistory;
+  Person* covidPat; Person* victim; Person* sortedHistory; Person contactHistory[50];
+
+  amountOfContact = 0;
+  amountOfVictimHistory = 0;
+
   covidPat = getCovidPatHistory();
   victim = getVictimHistory();
 
-  cout << endl;
-  
   cout << "-------------------------------------" << endl;
   cout << "         WELCOME TO ADMIN PAGE       " << endl;
   cout << "-------------------------------------" << endl;
@@ -1464,6 +1463,7 @@ void adminFunction(){
   }
 
   sortedHistory = arrSorting(contactHistory, counterContactHistory);
+
   system("cls");
   
   cout << "Displaying Potential Covid Chain!" << endl;
@@ -1476,8 +1476,8 @@ void adminFunction(){
     << sortedHistory[i].dependants << "\t""\t" << sortedHistory[i].vacStatus << "\t""\t" << sortedHistory[i].riskStatus << endl;
   }
   cout << "----------------------------------------------------------------------------------------------------" << endl;
+
 }
-  
 
 int main() {
 
