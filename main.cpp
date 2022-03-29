@@ -54,6 +54,7 @@ struct Person {
   string dependants;
   string vacStatus;
   string riskStatus;
+  int timeDiff;
 };
 
 
@@ -102,15 +103,14 @@ bool is_date_valid(const string& date)
    return std::regex_match(date, pattern);
 }
 
-// bool is_time_valid(const string& time)
-// {
-//    // define a regular expression
-//     const std::regex pattern
-//     ([0-1]?[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?$;
+bool is_time_valid(const string& time)
+{
+   // define a regular expression
+    const std::regex pattern
+    ("(?:[01]\\d|2[0-3]):(?:[0-5]\\d):(?:[0-5]\\d)");
 
-   // try to match the string with the regular expression
-//    return std::regex_match(time, pattern);
-// }
+   return std::regex_match(time, pattern);
+}
 
 Establishment* getEstList(){
   Establishment est;
@@ -1175,94 +1175,55 @@ void indiFunction(){
   cout << "--------------------------------------" << endl;
 }
 
-Person* getRedHistory(){
-  Person red;
-  static Person redHistory[10];
+Person* getCovidPatHistory(){
+  Person covidPat;
+  static Person covidPatHistory[20];
 
   int i = 0;
-  ifstream file("graph_red.txt");
-  while( file >> red.venue >> red.name >> red.date >> red.time >> red.dependants >> red.vacStatus >> red.riskStatus)
+  ifstream file("covid_pat.txt");
+  while( file >> covidPat.venue >> covidPat.name >> covidPat.date >> covidPat.time >> covidPat.dependants >> covidPat.vacStatus >> covidPat.riskStatus)
   {
-    redHistory[i].venue = red.venue;
-    redHistory[i].name = red.name;
-    redHistory[i].date = red.date;
-    redHistory[i].time = red.time;
-    redHistory[i].dependants = red.dependants;
-    redHistory[i].vacStatus = red.vacStatus;
-    redHistory[i].riskStatus = red.riskStatus;
+    covidPatHistory[i].venue = covidPat.venue;
+    covidPatHistory[i].name = covidPat.name;
+    covidPatHistory[i].date = covidPat.date;
+    covidPatHistory[i].time = covidPat.time;
+    covidPatHistory[i].dependants = covidPat.dependants;
+    covidPatHistory[i].vacStatus = covidPat.vacStatus;
+    covidPatHistory[i].riskStatus = covidPat.riskStatus;
     i++;
   }
   file.close();
-  return redHistory;
+  return covidPatHistory;
 }
 
-Person* getGreenHistory(){
-  Person green;
-  static Person greenHistory[10];
+int amountOfVictimHistory = 0; int amountOfContact = 0;
+
+Person* getVictimHistory(){
+  Person victim;
+  static Person victimHistory[50];
 
   int i = 0;
-  ifstream file("graph_green.txt");
-  while( file >> green.venue >> green.name >> green.date >> green.time >> green.dependants >> green.vacStatus >> green.riskStatus)
+  ifstream file("covid_victim.txt");
+  while( file >> victim.venue >> victim.name >> victim.date >> victim.time >> victim.dependants >> victim.vacStatus >> victim.riskStatus)
   {
-    greenHistory[i].venue = green.venue;
-    greenHistory[i].name = green.name;
-    greenHistory[i].date = green.date;
-    greenHistory[i].time = green.time;
-    greenHistory[i].dependants = green.dependants;
-    greenHistory[i].vacStatus = green.vacStatus;
-    greenHistory[i].riskStatus = green.riskStatus;
+    victimHistory[i].venue = victim.venue;
+    victimHistory[i].name = victim.name;
+    victimHistory[i].date = victim.date;
+    victimHistory[i].time = victim.time;
+    victimHistory[i].dependants = victim.dependants;
+    victimHistory[i].vacStatus = victim.vacStatus;
+    victimHistory[i].riskStatus = victim.riskStatus;
     i++;
+    amountOfVictimHistory++;
   }
   file.close();
-  return greenHistory;
+  return victimHistory;
 }
 
-Person* getBlueHistory(){
-  Person blue;
-  static Person blueHistory[10];
-
-  int i = 0;
-  ifstream file("graph_blue.txt");
-  while( file >> blue.venue >> blue.name >> blue.date >> blue.time >> blue.dependants >> blue.vacStatus >> blue.riskStatus)
-  {
-    blueHistory[i].venue = blue.venue;
-    blueHistory[i].name = blue.name;
-    blueHistory[i].date = blue.date;
-    blueHistory[i].time = blue.time;
-    blueHistory[i].dependants = blue.dependants;
-    blueHistory[i].vacStatus = blue.vacStatus;
-    blueHistory[i].riskStatus = blue.riskStatus;
-    i++;
-  }
-  file.close();
-  return blueHistory;
-}
-
-Person* getPinkHistory(){
-  Person pink;
-  static Person pinkHistory[10];
-
-  int i = 0;
-  ifstream file("graph_pink.txt");
-  while( file >> pink.venue >> pink.name >> pink.date >> pink.time >> pink.dependants >> pink.vacStatus >> pink.riskStatus)
-  {
-    pinkHistory[i].venue = pink.venue;
-    pinkHistory[i].name = pink.name;
-    pinkHistory[i].date = pink.date;
-    pinkHistory[i].time = pink.time;
-    pinkHistory[i].dependants = pink.dependants;
-    pinkHistory[i].vacStatus = pink.vacStatus;
-    pinkHistory[i].riskStatus = pink.riskStatus;
-    i++;
-  }
-  file.close();
-  return pinkHistory;
-}
-
-int linearSearch(Person array[], int size, string searchValue){
+int linearSearchRisk(Person history[], int size, string searchValue){
  
   for(int i = 0; i < size; i ++){
-    int k = searchValue.compare(array[i].riskStatus);
+    int k = searchValue.compare(history[i].riskStatus);
 
     if (k == 0){
       return i;
@@ -1272,56 +1233,78 @@ int linearSearch(Person array[], int size, string searchValue){
   return -1;
 }
 
+int* linearSearchVenue(Person history[], int size, string searchValue){
+
+  static int victimIndex[50]; 
+
+  for(int i = 0; i < size; i ++){
+    int k = searchValue.compare(history[i].venue);
+
+    if (k == 0){
+      victimIndex[amountOfContact] = i;
+      amountOfContact++;
+    }
+  }
+
+  return victimIndex;
+}
+
+Person* arrSorting(Person history[], int size) {
+  int i, j, min, timeDiff;
+  string venue, name, date, time, dependants, vacStatus, riskStatus;
+
+  for (i = 0; i < size; i++) {
+    for (j = i+1; j < size; j++){
+      if (history[j].timeDiff < history[min].timeDiff){
+
+        timeDiff = history[i].timeDiff;
+        venue = history[i].venue;
+        name = history[i].name;
+        date = history[i].date;
+        time = history[i].time;
+        dependants = history[i].dependants;
+        vacStatus = history[i].vacStatus;
+        riskStatus = history[i].riskStatus;
+
+        history[i].venue = history[j].venue;
+        history[i].name = history[j].name;
+        history[i].date = history[j].date;
+        history[i].time = history[j].time;
+        history[i].dependants = history[j].dependants;
+        history[i].vacStatus = history[j].vacStatus;
+        history[i].riskStatus = history[j].riskStatus;
+
+        history[j].venue = venue;
+        history[j].name = name;
+        history[j].date = date;
+        history[j].time = time;
+        history[j].dependants = dependants;
+        history[j].vacStatus = vacStatus;
+        history[j].riskStatus = riskStatus;
+      }
+    }
+  }
+
+  return history;
+}
+
 void adminFunction(){
-  bool isValidRisk = false;
-  int userInput; 
-  string adminVenue, adminDate, adminTime; 
+  bool isHighRisk = false; bool isValidVenue = false; 
+  string risk, venue, date, time; 
+  int counterContactHistory = 0;
+  Person* covidPat; Person* victim; static Person contactHistory[50]; Person* sortedHistory;
+  covidPat = getCovidPatHistory();
+  victim = getVictimHistory();
 
-
-  Person* red; Person* green; Person* blue; Person* pink;
-  red = getRedHistory();
-  green = getGreenHistory();
-  blue = getBlueHistory();
-  pink = getPinkHistory();
-  
-
-  // cout << "----------------------------------------------------------------------------------------------------" << endl;
-  // cout << "Venue"<< "\t" << "Name" << "\t" << "Date" << "\t" "\t" << "Time" << "\t" "\t" << "Dependants" << "\t" << "Vaccination" << "\t""\t" << "Risk Status" << endl;
-  // cout << "----------------------------------------------------------------------------------------------------" << endl;
-  // for (int i=0; i <2; i ++){
-  //   cout << red[i].venue << "\t" << red[i].name << "\t" << red[i].date << "\t" << red[i].time << "\t" << red[i].dependants << "\t""\t" << red[i].vacStatus << "\t""\t" << red[i].riskStatus << endl;
-  // }
-
-  // cout << endl;
-
-  // for (int i=0; i <3; i ++){
-  //   cout << pink[i].venue << "\t" << pink[i].name << "\t" << pink[i].date << "\t" << pink[i].time << "\t" << pink[i].dependants << "\t""\t" << pink[i].vacStatus << "\t""\t" << pink[i].riskStatus << endl;
-  // }
-
-  // cout << endl;
-
-  // for (int i=0; i <3; i ++){
-  //   cout << blue[i].venue << "\t" << blue[i].name << "\t" << blue[i].date << "\t" << blue[i].time << "\t" << blue[i].dependants << "\t""\t" << blue[i].vacStatus << "\t""\t" << blue[i].riskStatus << endl;
-  // }
-
-  // cout << endl;
-
-  // for (int i=0; i <2; i ++){
-  //   cout << green[i].venue << "\t" << green[i].name << "\t" << green[i].date << "\t" << green[i].time << "\t" << green[i].dependants << "\t""\t" << green[i].vacStatus << "\t""\t" << green[i].riskStatus << endl;
-  // }
-
-  // cout << endl;
-
-  string userValue;
+  cout << endl;
   
   cout << "-------------------------------------" << endl;
   cout << "         WELCOME TO ADMIN PAGE       " << endl;
   cout << "-------------------------------------" << endl;
 
-  // This validation should be completed by today!
   do{
     cout << "What are you looking for (Note: High) : ";
-    cin >> userValue;
+    cin >> risk;
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
     if(cin.fail()){
@@ -1333,16 +1316,9 @@ void adminFunction(){
       cout << "Input: ";
     }else{
 
-      if (userValue == "High"){
-        indi.riskStat = "Low";
-        isValidRisk = true;
-      }
-      else if(userInput == 2)
-      {
-        indi.riskStat = "High";
-        isValidRisk = true;
-      }
-      else if(userInput != 1 && userInput != 2){
+      if (risk == "High"){
+        isHighRisk = true;
+      } else{
         cin.clear();
         cout << "----------------------------------" << endl;
         cout << "   Please insert 'High' only!     " << endl;
@@ -1350,53 +1326,148 @@ void adminFunction(){
       }
     }
 
-  }while(!(isValidRisk == true));
+  }while(!(isHighRisk == true));
 
-  int result = linearSearch(red, 2, userValue);
+  int result = linearSearchRisk(covidPat, 2, risk);
 
   if(result >= 0){
     system("cls");
+
     cout << "------------------------------" << endl;
-    cout << "    High Risk Person Found !  " << endl;
+    cout << "    High Risk Person Found!   " << endl;
     cout << "------------------------------" << endl;
-    cout << "Person Name: " << red[result].name << endl;
-    cout << "Date:        " << red[result].date << endl;
-    cout << "Time:        " << red[result].time << endl;
-    cout << "Dependnts:   " << red[result].dependants << endl;
-    cout << "Risk Status: " << red[result].riskStatus << endl;
-    cout << "Vac Status:  " << red[result].vacStatus << endl;
-  } else {
-    cout << "----------------------------------" << endl;
-    cout << "Risk Status : " << userValue << " was not found." << endl;
-    cout << "----------------------------------" << endl;
+    cout << "Person Name : " << covidPat[result].name << endl;
+    cout << "Venue       : " << covidPat[result].venue << endl;
+    cout << "Date        : " << covidPat[result].date << endl;
+    cout << "Time        : " << covidPat[result].time << endl;
+    cout << "Dependnts   : " << covidPat[result].dependants << endl;
+    cout << "Risk Status : " << covidPat[result].riskStatus << endl;
+    cout << "Vac Status  : " << covidPat[result].vacStatus << endl;
   }
 
-  cout << "--------------------" << endl; 
-  cout << "   Insert Details   " << endl;
-  cout << "--------------------" << endl; 
-  cout << "Insert Venue: ";
-  cin >> adminVenue;
+  do{
+    cout << "---------------------------" << endl;
+    cout << "Please insert High Risk Venue! " << endl;
+    cout << "---------------------------" << endl; 
+    cout << "Insert Venue: ";
+    cin >> venue;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
+    if(cin.fail()){
+      cin.clear();
+      cin.ignore(numeric_limits<streamsize>::max(), '\n');
+      cout << "---------------------------" << endl;
+      cout << "Please insert Valid Venue! " << endl;
+      cout << "---------------------------" << endl; 
+      cout << "Insert Venue: ";
+    }else{
+      if (venue == "KFC"){
+        isValidVenue = true;
+      } else {
+        system("cls");
+        cout << "-------------------------------" << endl;
+        cout << "  Only insert High Risk Venue! " << endl;
+        cout << "-------------------------------" << endl;
+        cout << "Person Name : " << covidPat[result].name << endl;
+        cout << "Venue       : " << covidPat[result].venue << endl;
+        cout << "Date        : " << covidPat[result].date << endl;
+        cout << "Time        : " << covidPat[result].time << endl;
+        cout << "Dependnts   : " << covidPat[result].dependants << endl;
+        cout << "Risk Status : " << covidPat[result].riskStatus << endl;
+        cout << "Vac Status  : " << covidPat[result].vacStatus << endl;
+      }
+    }
+
+  }while(!(isValidVenue == true));
+
+  int* data;
+  data = linearSearchVenue(victim, amountOfVictimHistory, venue);
 
   cout << "Insert Date : ";
-  cin >> adminDate;
+  cin >> date;
   cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-  while(!is_date_valid(adminDate)){
+  while(!is_date_valid(date) || date != "25-02-2022"){
     cout << "-----------------------------------" << endl;
     cout << "           Invalid Date            " << endl;
-    cout << "        Format '00-00-0000'        " << endl; 
+    cout << "        Format 'DD-MM-YYYY'        " << endl; 
     cout << "-----------------------------------" << endl;
-    cout << "Please insert correct Date: ";
+    cout << "Please insert Detected Date: ";
     cin.clear();
-    cin >> adminDate;
+    cin >> date;
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
   }
 
-
-
   cout << "Insert Time : ";
-  cin >> adminTime;
+  cin >> time;
+  cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+  while(!is_time_valid(time) || time != "13:00:00"){
+    cout << "-----------------------------------" << endl;
+    cout << "           Invalid Time            " << endl;
+    cout << "        Format 'HH-MM-SS'        " << endl; 
+    cout << "-----------------------------------" << endl;
+    cout << "Please insert Detected Time: ";
+    cin.clear();
+    cin >> time;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+  }
+
+  string covidHour = time.substr(0,2);
+  string covidMin = time.substr(3,2);
+  string covidSec = time.substr(6,2);
+
+  int covidTime = stoi(covidHour)*3600 + stoi(covidMin)*60 + stoi(covidSec);
+
+  for (int i = 0; i < amountOfContact; i ++){
+    if (date == (victim[data[i]].date)){
+
+      string victimHour = (victim[data[i]].time).substr(0,2);
+      string victimMin = (victim[data[i]].time).substr(3,2);
+      string victimSec = (victim[data[i]].time).substr(6,2);
+
+      int victimTime = stoi(victimHour)*3600 + stoi(victimMin)*60 + stoi(victimSec);
+      int timeDiff = victimTime - covidTime;
+
+      if (timeDiff <= 3600) {
+
+        victim[data[counterContactHistory]].riskStatus = "Close";
+        contactHistory[counterContactHistory].name = victim[data[i]].name;
+        contactHistory[counterContactHistory].venue = victim[data[i]].venue;
+        contactHistory[counterContactHistory].date = victim[data[i]].date;
+        contactHistory[counterContactHistory].time = victim[data[i]].time;
+        contactHistory[counterContactHistory].dependants = victim[data[i]].dependants;
+        contactHistory[counterContactHistory].vacStatus = victim[data[i]].vacStatus;
+        contactHistory[counterContactHistory].riskStatus = victim[data[i]].riskStatus;
+        contactHistory[counterContactHistory].timeDiff = timeDiff;
+        counterContactHistory++;
+        
+      } else if (timeDiff <= 7200){
+        victim[data[counterContactHistory]].riskStatus = "Casual";
+        contactHistory[counterContactHistory].name = victim[data[i]].name;
+        contactHistory[counterContactHistory].venue = victim[data[i]].venue;
+        contactHistory[counterContactHistory].date = victim[data[i]].date;
+        contactHistory[counterContactHistory].time = victim[data[i]].time;
+        contactHistory[counterContactHistory].dependants = victim[data[i]].dependants;
+        contactHistory[counterContactHistory].vacStatus = victim[data[i]].vacStatus;
+        contactHistory[counterContactHistory].riskStatus = victim[data[i]].riskStatus;
+        contactHistory[counterContactHistory].timeDiff = timeDiff;
+        counterContactHistory++;
+      }
+    }
+  }
+
+  sortedHistory = arrSorting(contactHistory, counterContactHistory);
+
+  cout << "Displaying Potential Covid Chain!" << endl;
+  cout << "----------------------------------------------------------------------------------------------------" << endl;
+  cout << "Venue"<< "\t" << "Name" << "\t" << "Date" << "\t" "\t" << "Time" << "\t" "\t" << "Dependants" << "\t" << "Vaccination" << "\t""\t" << "Risk Status" << endl;
+  cout << "----------------------------------------------------------------------------------------------------" << endl;
+
+  for (int i=0; i< counterContactHistory; i ++) {\
+    cout << sortedHistory[i].venue << "\t" << sortedHistory[i].name << "\t" << sortedHistory[i].date << "\t" << sortedHistory[i].time << "\t" 
+    << sortedHistory[i].dependants << "\t""\t" << sortedHistory[i].vacStatus << "\t""\t" << sortedHistory[i].riskStatus << endl;
+  }
 }
 
 int main() {
