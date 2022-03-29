@@ -246,24 +246,23 @@ void displayDependants(){
   // Display List of Dependant
   { 
     system("cls");
-    cout << "----------------------------------------------------" << endl;
-    cout << "                   Dependants List                  " << endl;
-    cout << "----------------------------------------------------" << endl;
-    cout << "No ""\t""Name""\t""IC Passport""\t""Address""\t""Gender""\t""Dependants""\t""Age" << endl; 
-
+    cout << "----------------------------------------------------------------------" << endl;
+    cout << "                           Dependants List                            " << endl;
+    cout << "No "<< "\t" << "Name" << "\t" << "IC Passport" << "\t" << "Address" << "\t" << "Gender" << "\t" << "Dependants" << "\t" << "Age" << endl; 
+    cout << "----------------------------------------------------------------------" << endl;
     
     for (int i = 0; i <= rear; i++) {
-      cout << i+1 << "  " 
-           << dep[i].depDetails.name << "  " 
-           << dep[i].depDetails.icPassport << "  " 
-           << dep[i].depDetails.address << "  "
-           << dep[i].depDetails.gender << "  " 
-           << dep[i].relation << "  " 
-           << dep[i].depDetails.age << "  "
+      cout << i+1 << "\t"  
+           << dep[i].depDetails.name << "\t" 
+           << dep[i].depDetails.icPassport << "\t" 
+           << dep[i].depDetails.address << "\t" 
+           << dep[i].depDetails.gender << "\t"  
+           << dep[i].relation << "\t" << "\t"
+           << dep[i].depDetails.age << "\t" 
            << endl;
     }
 
-    cout << "-------------------------------" << endl;
+    cout << "----------------------------------------------------------------------" << endl;
   }
 }
 
@@ -279,7 +278,10 @@ void addDependants() {
    else {
       if (front == - 1) {
         front = 0; rear = 0; 
-        cout << "Dependant Name: ";
+        cout << "-----------------------------------" << endl;
+        cout << "         Dependants Details        " << endl; 
+        cout << "-----------------------------------" << endl;
+        cout << "Dependant Name         : ";
         getline(cin, dep[front].depDetails.name);
 
         cout << "Dependant IC / Passport: ";
@@ -299,8 +301,8 @@ void addDependants() {
         
         dep[front].depDetails.icPassport = depIcPassport;
 
-        cout << "Dependant Address: ";
-        cin >> dep[front].depDetails.address;
+        cout << "Dependant Address      : ";
+        getline(cin, dep[front].depDetails.address);
 
 
         cout << "Dependant Gender(M / F): ";
@@ -390,8 +392,8 @@ void addDependants() {
                 }
             } 
        }while(!(isValidDep == true));       
-        
-      cout << "Dependants Age: ";
+
+      cout << "Dependants Age         : ";
         do{
           cin >> depAge;
           cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -431,8 +433,10 @@ void addDependants() {
         cout << "-------------------------------" << endl;
       } else {
         rear = rear + 1;
-        
-        cout << "Dependant Name: ";
+        cout << "-----------------------------------" << endl;
+        cout << "         Dependants Details        " << endl; 
+        cout << "-----------------------------------" << endl;
+        cout << "Dependant Name         : ";
         getline(cin, dep[rear].depDetails.name);
 
         cout << "Dependant IC / Passport: ";
@@ -452,8 +456,8 @@ void addDependants() {
 
         dep[rear].depDetails.icPassport = depIcPassport;
 
-        cout << "Dependant Address: ";
-        cin >> dep[rear].depDetails.address;
+        cout << "Dependant Address      : ";
+        getline(cin, dep[rear].depDetails.address);
 
         cout << "Dependant Gender(M / F): ";
         cin >> depGender;
@@ -526,7 +530,7 @@ void addDependants() {
           dep[rear].relation = "Others";
         }
 
-        cout << "Dependants Age: ";
+        cout << "Dependants Age         : ";
         do{
           cin >> depAge;
           cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -608,7 +612,7 @@ void deleteDependants(){
 
                 system("cls");
                 cout << "--------------------------------------" << endl;
-                cout << "Delete Succesfully!                   " << endl;
+                cout << "         Delete Succesfully!          " << endl;
                 cout << "--------------------------------------" << endl;
                 rear--;
 
@@ -640,6 +644,7 @@ void manageDependants(){
     cout << "Input: ";
     cin >> userOption2;
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    system("cls");
     
     if(cin.fail()){
       cin.clear();
@@ -812,9 +817,9 @@ void checkIn(){
   }
 
   displayEst();
-  cout << "(Press -1 to cancel login) "; 
+  cout << "(Press -1 to cancel CheckIN) "; 
   cout << "Insert Venue Code: "; 
-
+  system("cls");
 
   do{
     cin >> userOption3;
@@ -827,6 +832,7 @@ void checkIn(){
       displayEst();
       cout << "(Press -1 to cancel login) "; 
       cout << "Please insert Venue Index!" << endl;
+      cout << "Insert Venue Code: ";
     }else {
       if (userOption3 >= 101 && userOption3 <= 110){
         isValidVenue = true;
@@ -869,13 +875,13 @@ void checkIn(){
         depNames = "-";
       }
 
-      cout << "Venue: " << venue << endl; 
-      cout << "Name: " << indi.userDetails.name << endl;
-      cout << "Date: " << checkInDate << endl;
-      cout << "Time: " << checkInTime << endl;
-      cout << "Dependants: " << depNames << endl;
+      cout << "Venue      : " << venue << endl; 
+      cout << "Name       : " << indi.userDetails.name << endl;
+      cout << "Date       : " << checkInDate << endl;
+      cout << "Time       : " << checkInTime << endl;
+      cout << "Dependants : " << depNames << endl;
       cout << "Vaccination: " <<indi.vacDetails << endl;
-      cout << "Risk: " <<indi.riskStat << endl;
+      cout << "Risk       : " <<indi.riskStat << endl;
       break;
     }
   }
@@ -933,8 +939,8 @@ void indiFunction(){
   cout << "       Register Account        " << endl;
   cout << "(Please insert correct details)" << endl;
   cout << "-------------------------------" << endl;
-  
-  cout << "Full Name : ";
+
+  cout << "Full Name     : ";
   getline(cin, indi.userDetails.name);
 
   cout << "IC / Passport : ";
@@ -954,7 +960,7 @@ void indiFunction(){
   
   indi.userDetails.icPassport = icPassport;
 
-  cout << "Address : ";
+  cout << "Address       : ";
   getline(cin, indi.userDetails.address);
 
   cout << "Gender (M / F): ";
@@ -978,7 +984,7 @@ void indiFunction(){
     indi.userDetails.gender = "Female";
   }
   
-  cout << "Age : ";
+  cout << "Age           : ";
   do{
     cin >> age;
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -1005,7 +1011,7 @@ void indiFunction(){
   
   indi.userDetails.age = age;
 
-  cout << "Email : ";
+  cout << "Email         : ";
   cin >> email;
   cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
@@ -1021,8 +1027,8 @@ void indiFunction(){
   }
     
   indi.email = email;
-
-  cout << "Phone Number : ";
+ 
+  cout << "Phone Number  : ";
   cin >> phoneNumber;
   cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
@@ -1047,7 +1053,7 @@ void indiFunction(){
   cout << "2) Partial                       " << endl;
   cout << "3) Fully                         " << endl;
   cout << "---------------------------------" << endl; 
-  cout << "Please select Vaccination Status: ";
+  cout << "Vaccination Status: ";
 
   do{
     cin >> userInput;
@@ -1092,7 +1098,7 @@ void indiFunction(){
   cout << "1) Low                           " << endl;
   cout << "2) High                          " << endl;
   cout << "---------------------------------" << endl; 
-  cout << "Please select Risk Status: ";
+  cout << "Risk Status: ";
 
   do{
     cin >> userInput;
@@ -1142,7 +1148,7 @@ void indiFunction(){
     cout << "2) Manage Dependants             " << endl;
     cout << "3) Check in                      " << endl;
     cout << "4) History                       " << endl;
-    cout << "5) Exit Application              " << endl;
+    cout << "5) Logout                        " << endl;
     cout << "---------------------------------" << endl; 
 
     cin >> userOption;
@@ -1346,9 +1352,9 @@ void adminFunction(){
   }
 
   do{
-    cout << "---------------------------" << endl;
-    cout << "Please insert High Risk Venue! " << endl;
-    cout << "---------------------------" << endl; 
+    cout << "--------------------------------" << endl;
+    cout << "Please insert High Risk Details! " << endl;
+    cout << "--------------------------------" << endl; 
     cout << "Insert Venue: ";
     cin >> venue;
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -1405,7 +1411,7 @@ void adminFunction(){
   while(!is_time_valid(time) || time != "13:00:00"){
     cout << "-----------------------------------" << endl;
     cout << "           Invalid Time            " << endl;
-    cout << "        Format 'HH-MM-SS'        " << endl; 
+    cout << "        Format 'HH:MM:SS'        " << endl; 
     cout << "-----------------------------------" << endl;
     cout << "Please insert Detected Time: ";
     cin.clear();
@@ -1458,7 +1464,8 @@ void adminFunction(){
   }
 
   sortedHistory = arrSorting(contactHistory, counterContactHistory);
-
+  system("cls");
+  
   cout << "Displaying Potential Covid Chain!" << endl;
   cout << "----------------------------------------------------------------------------------------------------" << endl;
   cout << "Venue"<< "\t" << "Name" << "\t" << "Date" << "\t" "\t" << "Time" << "\t" "\t" << "Dependants" << "\t" << "Vaccination" << "\t""\t" << "Risk Status" << endl;
@@ -1468,7 +1475,9 @@ void adminFunction(){
     cout << sortedHistory[i].venue << "\t" << sortedHistory[i].name << "\t" << sortedHistory[i].date << "\t" << sortedHistory[i].time << "\t" 
     << sortedHistory[i].dependants << "\t""\t" << sortedHistory[i].vacStatus << "\t""\t" << sortedHistory[i].riskStatus << endl;
   }
+  cout << "----------------------------------------------------------------------------------------------------" << endl;
 }
+  
 
 int main() {
 
