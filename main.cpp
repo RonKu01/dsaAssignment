@@ -5,6 +5,7 @@
 #include <vector>
 #include <limits>
 #include <regex>
+#include <iomanip>
 
 using namespace std;
 const int depArrSize = 10;
@@ -245,23 +246,23 @@ void displayDependants(){
   // Display List of Dependant
   { 
     system("cls");
-    cout << "----------------------------------------------------------------------" << endl;
-    cout << "                           Dependants List                            " << endl;
-    cout << "No "<< "\t" << "Name" << "\t" << "IC Passport" << "\t" << "Address" << "\t" << "Gender" << "\t" << "Dependants" << "\t" << "Age" << endl; 
-    cout << "----------------------------------------------------------------------" << endl;
+    cout << "----------------------------------------------------------------------------" << endl;
+    cout << "                               Dependants List                              " << endl;
+    cout << "No  Name      IC/Passport    Address          Gender  Dependants     Age " << endl; 
+    cout << "----------------------------------------------------------------------------" << endl;
     
     for (int i = 0; i <= rear; i++) {
-      cout << i+1 << "\t"  
-           << dep[i].depDetails.name << "\t" 
-           << dep[i].depDetails.icPassport << "\t" 
-           << dep[i].depDetails.address << "\t" 
-           << dep[i].depDetails.gender << "\t"  
-           << dep[i].relation << "\t" << "\t"
-           << dep[i].depDetails.age << "\t" 
+      cout << left << setw(4) << setfill(' ') << i+1   
+           << left << setw(10) << setfill(' ') << dep[i].depDetails.name  
+           << left << setw(15) << setfill(' ') << dep[i].depDetails.icPassport 
+           << left << setw(17) << setfill(' ') << dep[i].depDetails.address
+           << left << setw(8) << setfill(' ') << dep[i].depDetails.gender  
+           << left << setw(15) << setfill(' ') << dep[i].relation 
+           << left << setw(4) << setfill(' ') << dep[i].depDetails.age 
            << endl;
     }
 
-    cout << "----------------------------------------------------------------------" << endl;
+    cout << "----------------------------------------------------------------------------" << endl;
   }
 }
 
@@ -333,13 +334,13 @@ void addDependants() {
         cout << "1) Spouse                        " << endl;
         cout << "2) Child                         " << endl;
         cout << "3) Siblings                      " << endl;
-        cout << "4) Parents / Parents-in-law      " << endl;
+        cout << "4) Parents                       " << endl;
         cout << "5) Grandparents                  " << endl;
         cout << "6) Guardian                      " << endl;
         cout << "7) Others                        " << endl;
         cout << "---------------------------------" << endl;
-        cout << "Input: ";
-       
+        cout << "Input                  : ";
+
        do{
           cin >> userInput;
           cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -365,7 +366,7 @@ void addDependants() {
                   isValidDep = true;
                 }
                 else if(userInput == 4){
-                  dep[front].relation = "Parents / Parents-in-law";
+                  dep[front].relation = "Parents";
                   isValidDep = true;
                 }
                 else if(userInput == 5){
@@ -488,7 +489,7 @@ void addDependants() {
         cout << "1) Spouse                        " << endl;
         cout << "2) Child                         " << endl;
         cout << "3) Siblings                      " << endl;
-        cout << "4) Parents / Parents-in-law      " << endl;
+        cout << "4) Parents                       " << endl;
         cout << "5) Grandparents                  " << endl;
         cout << "6) Guardian                      " << endl;
         cout << "7) Others                        " << endl;
@@ -517,7 +518,7 @@ void addDependants() {
           dep[rear].relation = "Siblings";
         }
         else if(userInput == 4){
-          dep[rear].relation = "Parents / Parents-in-law";
+          dep[rear].relation = "Parents";
         }
         else if(userInput == 5){
           dep[rear].relation = "Grandparents";
@@ -814,11 +815,10 @@ void checkIn(){
       } while (!(isConfirm == true));
     }
   }
-
-  displayEst();
-  cout << "(Press -1 to cancel CheckIN) "; 
-  cout << "Insert Venue Code: "; 
   system("cls");
+  displayEst();
+  cout << "(Press -1 to cancel CheckIN) " << endl; 
+  cout << "Insert Venue Code: "; 
 
   do{
     cin >> userOption3;
@@ -901,7 +901,7 @@ void displayHistoryList() {
   cout << "-------------------------------" << endl;
   cout << "          History Log          " << endl;
   cout << "-------------------------------" << endl;
-  cout << "Venue \t FullName \t Date \t \t Time \t Dependants \t VacStatus \t RiskStatus" << endl; 
+  cout << "Venue   FullName     Date       Time      Dependants          VacStatus   RiskStatus" << endl; 
 
   while (nav != NULL)
   {
@@ -916,13 +916,13 @@ void displayHistoryList() {
       depNames = "-";
     }
 
-    cout  << nav->est.venue << " \t " 
-          << nav->indi.userDetails.name << " \t " 
-          << nav->date << " \t " 
-          << nav->time << " \t " 
-          << depNames << " \t " 
-          << nav->indi.vacDetails << " \t " 
-          << nav->indi.riskStat << endl; 
+    cout << left << setw(8) << setfill(' ') << nav->est.venue 
+         << left << setw(13) << setfill(' ') << nav->indi.userDetails.name
+         << left << setw(11) << setfill(' ') << nav->date
+         << left << setw(10) << setfill(' ') << nav->time
+         << left << setw(20) << setfill(' ') << depNames
+         << left << setw(12) << setfill(' ') << nav->indi.vacDetails
+         << left << setw(10) << setfill(' ') << nav->indi.riskStat << endl; 
   
     nav = nav -> nxtHistory;
   }
