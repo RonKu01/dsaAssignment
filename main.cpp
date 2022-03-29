@@ -150,10 +150,12 @@ void displayEst() {
 
   cout << "----------------" << endl;
   cout << "   Venue List   " << endl;
+  cout << "Venue   List    " << endl; 
   cout << "----------------" << endl;
   
   for (int i=0; i <10; i ++){
-    cout << est[i].code << "   " << est[i].venue << endl;
+    cout << left << setw(7) << setfill(' ') << est[i].code 
+         << left << setw(8) << setfill(' ') << est[i].venue << endl;
   }
   cout << "----------------" << endl;
 }
@@ -246,10 +248,11 @@ void displayDependants(){
   // Display List of Dependant
   { 
     system("cls");
-    cout << "----------------------------------------------------------------------------" << endl;
-    cout << "                               Dependants List                              " << endl;
+    cout << "-------------------------------------------------------------------------" << endl;
+    cout << "                               Dependants List                           " << endl;
+    cout << "-------------------------------------------------------------------------" << endl;
     cout << "No  Name      IC/Passport    Address          Gender  Dependants     Age " << endl; 
-    cout << "----------------------------------------------------------------------------" << endl;
+    
     
     for (int i = 0; i <= rear; i++) {
       cout << left << setw(4) << setfill(' ') << i+1   
@@ -262,7 +265,7 @@ void displayDependants(){
            << endl;
     }
 
-    cout << "----------------------------------------------------------------------------" << endl;
+    cout << "-------------------------------------------------------------------------" << endl;
   }
 }
 
@@ -387,8 +390,6 @@ void addDependants() {
                   cout << "   Fail! Please Reselect Again!   " << endl;
                   cout << "----------------------------------" << endl;
                   cout << "Input: ";
-                  cin >> userInput;
-                  cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
                 }
             } 
        }while(!(isValidDep == true));       
@@ -495,41 +496,57 @@ void addDependants() {
         cout << "7) Others                        " << endl;
         cout << "---------------------------------" << endl;
         cout << "Input: ";
-        cin >> userInput;
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-        while(userInput != 1 && userInput !=2 && userInput !=3 && userInput !=4 && userInput !=5 && userInput !=6 && userInput !=7){
-          cin.clear();
-          cout << "----------------------------------" << endl;
-          cout << "   Fail! Please Reselect Again!   " << endl;
-          cout << "----------------------------------" << endl;
-          cout << "Input: ";
+        
+        do{
           cin >> userInput;
           cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        }
-      
-        if(userInput == 1){
-          dep[rear].relation = "Spouse";
-        }
-        else if(userInput == 2){
-          dep[rear].relation = "Child";
-        }
-        else if(userInput == 3){
-          dep[rear].relation = "Siblings";
-        }
-        else if(userInput == 4){
-          dep[rear].relation = "Parents";
-        }
-        else if(userInput == 5){
-          dep[rear].relation = "Grandparents";
-        }
-        else if(userInput == 6){
-          dep[rear].relation = "Guardian";
-        }
-        else if(userInput == 7){
-          dep[rear].relation = "Others";
-        }
 
+          if(cin.fail()){
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "---------------------------" << endl;
+            cout << "Please insert number only! " << endl;
+            cout << "---------------------------" << endl; 
+            cout << "Input: ";
+          }else{
+                if(userInput == 1){
+                  dep[rear].relation = "Spouse";
+                  isValidDep = true;
+                }
+                else if(userInput == 2){
+                  dep[rear].relation = "Child";
+                  isValidDep = true;
+                }
+                else if(userInput == 3){
+                  dep[rear].relation = "Siblings";
+                  isValidDep = true;
+                }
+                else if(userInput == 4){
+                  dep[rear].relation = "Parents";
+                  isValidDep = true;
+                }
+                else if(userInput == 5){
+                  dep[rear].relation = "Grandparents";
+                  isValidDep = true;
+                }
+                else if(userInput == 6){
+                  dep[rear].relation = "Guardian";
+                  isValidDep = true;
+                }
+                else if(userInput == 7){
+                  dep[rear].relation = "Others";
+                  isValidDep = true;
+                }
+                else if(userInput != 1 && userInput !=2 && userInput !=3 && userInput !=4 && userInput !=5 && userInput !=6 && userInput !=7){
+                  cin.clear();
+                  cout << "----------------------------------" << endl;
+                  cout << "   Fail! Please Reselect Again!   " << endl;
+                  cout << "----------------------------------" << endl;
+                  cout << "Input: ";
+                }
+            } 
+       }while(!(isValidDep == true));  
+        
         cout << "Dependants Age         : ";
         do{
           cin >> depAge;
@@ -898,9 +915,9 @@ void displayHistoryList() {
 
   History* nav = top;
   
-  cout << "-------------------------------" << endl;
-  cout << "          History Log          " << endl;
-  cout << "-------------------------------" << endl;
+  cout << "------------------------------------------------------------------------------------" << endl;
+  cout << "                                      History Log                                   " << endl;
+  cout << "------------------------------------------------------------------------------------" << endl;
   cout << "Venue   FullName     Date       Time      Dependants          VacStatus   RiskStatus" << endl; 
 
   while (nav != NULL)
@@ -932,7 +949,9 @@ void indiFunction(){
   int userOption, userInput, age;
   string icPassport, email, phoneNumber; 
   char gender;
-  bool isValidAge, isValidVaccine, isValidRisk = false;
+  bool isValidAge = false; 
+  bool isValidVaccine = false;
+  bool isValidRisk = false;
   
   cout << "-------------------------------" << endl;
   cout << "       Register Account        " << endl;
@@ -1467,15 +1486,20 @@ void adminFunction(){
   system("cls");
   
   cout << "Displaying Potential Covid Chain!" << endl;
-  cout << "----------------------------------------------------------------------------------------------------" << endl;
-  cout << "Venue"<< "\t" << "Name" << "\t" << "Date" << "\t" "\t" << "Time" << "\t" "\t" << "Dependants" << "\t" << "Vaccination" << "\t""\t" << "Risk Status" << endl;
-  cout << "----------------------------------------------------------------------------------------------------" << endl;
+  cout << "---------------------------------------------------------------------------------------" << endl;
+  cout << "Venue   Name        Date        Time      Dependants     Vaccination       Risk Status " << endl;
+  cout << "---------------------------------------------------------------------------------------" << endl;
 
-  for (int i=0; i< counterContactHistory; i ++) {\
-    cout << sortedHistory[i].venue << "\t" << sortedHistory[i].name << "\t" << sortedHistory[i].date << "\t" << sortedHistory[i].time << "\t" 
-    << sortedHistory[i].dependants << "\t""\t" << sortedHistory[i].vacStatus << "\t""\t" << sortedHistory[i].riskStatus << endl;
+  for (int i=0; i< counterContactHistory; i ++) {
+    cout << left << setw(8) << setfill(' ') << sortedHistory[i].venue 
+         << left << setw(12) << setfill(' ') << sortedHistory[i].name 
+         << left << setw(12) << setfill(' ') << sortedHistory[i].date 
+         << left << setw(10) << setfill(' ') << sortedHistory[i].time 
+         << left << setw(15) << setfill(' ') << sortedHistory[i].dependants
+         << left << setw(18) << setfill(' ') << sortedHistory[i].vacStatus 
+         << left << setw(12) << setfill(' ') << sortedHistory[i].riskStatus << endl;
   }
-  cout << "----------------------------------------------------------------------------------------------------" << endl;
+  cout << "---------------------------------------------------------------------------------------" << endl;
 
 }
 
