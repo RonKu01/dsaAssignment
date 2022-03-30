@@ -719,6 +719,54 @@ void pushHistory
   top = nHistory;
 };
 
+void writeFile(){
+
+  History* nav = top;
+  ofstream vFile("covid_victim.txt", ofstream::trunc);
+
+  if (vFile.is_open()){
+
+    vFile << "KFC Green 25-02-2022 14:20:00 Ryzen Fully Low" << endl 
+          << "Campus Green 25-02-2022 08:00:00 Ryzen Fully Low" << endl
+          << "KFC Blue 25-02-2022 15:00:00 Peter Fully Low" << endl
+          << "MCD Blue 25-02-2022 10:56:00 - Fully Low" << endl
+          << "Campus Blue 25-02-2022 08:00:00 Peter Fully Low" << endl
+          << "KFC Pink 25-02-2022 13:30:00 Kelvin Fully Low" << endl
+          << "MCD Pink 25-02-2022 10:30:00 Kelvin Fully Low" << endl
+          << "Campus Pink 25-02-2022 08:00:00 Kelvin Fully Low" << endl;
+
+    while (nav != NULL)
+    {
+      string depNames = "";
+
+      if ((nav->totalDep) > 0){
+        for (int i = 0; i < (nav->totalDep); i++){
+          depNames += (nav->dep[i].depDetails.name + ",");
+        };
+        depNames.back() = ' ';
+      } else {
+        depNames = "-";
+      }
+
+      string indiNames = nav->indi.userDetails.name;
+      indiNames.erase(remove(indiNames.begin(), indiNames.end(), ' '), indiNames.end());
+      depNames.erase(remove(depNames.begin(), depNames.end(), ' '), depNames.end());
+
+      vFile << nav->est.venue << " "
+            << indiNames << " "
+            << nav->date << " "
+            << nav->time << " "
+            << depNames << " " 
+            << nav->indi.vacDetails << " "
+            << nav->indi.riskStat << endl;
+
+      nav = nav -> nxtHistory;
+    }
+
+    vFile.close();
+  }
+}
+
 void checkIn(){
 
   int userOption = 0, userOption2, userOption3;
@@ -903,6 +951,7 @@ void checkIn(){
   }
 
   pushHistory(estCode, venue, indi.userDetails.name, depName, userOption, indi.vacDetails, indi.riskStat, checkInDate, checkInTime);
+  writeFile();
 }
 
 void displayHistoryList() {
@@ -943,6 +992,7 @@ void displayHistoryList() {
   
     nav = nav -> nxtHistory;
   }
+  cout << "------------------------------------------------------------------------------------" << endl;
 }; 
 
 void indiFunction(){
@@ -1500,7 +1550,6 @@ void adminFunction(){
          << left << setw(12) << setfill(' ') << sortedHistory[i].riskStatus << endl;
   }
   cout << "---------------------------------------------------------------------------------------" << endl;
-
 }
 
 int main() {
