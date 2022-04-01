@@ -726,12 +726,12 @@ void writeFile(){
 
   if (vFile.is_open()){
 
-    vFile << "KFC Green 25-02-2022 14:20:00 Ryzen Fully Low" << endl 
+    vFile << "KFC Green 01-04-2022 11:20:00 Ryzen Fully Low" << endl 
           << "Campus Green 25-02-2022 08:00:00 Ryzen Fully Low" << endl
-          << "KFC Blue 25-02-2022 15:00:00 Peter Fully Low" << endl
+          << "KFC Blue 01-04-2022 11:00:00 Peter Fully Low" << endl
           << "MCD Blue 25-02-2022 10:56:00 - Fully Low" << endl
           << "Campus Blue 25-02-2022 08:00:00 Peter Fully Low" << endl
-          << "KFC Pink 25-02-2022 13:30:00 Kelvin Fully Low" << endl
+          << "KFC Pink 01-04-2022 12:30:00 Kelvin Fully Low" << endl
           << "MCD Pink 25-02-2022 10:30:00 Kelvin Fully Low" << endl
           << "Campus Pink 25-02-2022 08:00:00 Kelvin Fully Low" << endl;
 
@@ -752,10 +752,73 @@ void writeFile(){
       indiNames.erase(remove(indiNames.begin(), indiNames.end(), ' '), indiNames.end());
       depNames.erase(remove(depNames.begin(), depNames.end(), ' '), depNames.end());
 
+      string strDate = nav->date;
+
+      std::vector<int> vect;
+      std::stringstream ss(strDate);
+
+      for (int i; ss >> i;) {
+        vect.push_back(i);
+        if (ss.peek() == '-')
+            ss.ignore();
+      }
+
+      string writeDay = ""; string writeMonth = ""; string writeYear = "";
+
+      if (vect[0] < 10) {
+        writeDay = "0" + to_string(vect[0]);
+      } else {
+        writeDay = to_string(vect[0]);
+      }
+
+      if (vect[1] < 10) {
+        writeMonth = "0" + to_string(vect[1]);
+      } else {
+        writeMonth = to_string(vect[1]);
+      }
+
+      if (vect[2] < 10) {
+        writeYear = "0" + to_string(vect[2]);
+      } else {
+        writeYear = to_string(vect[2]);
+      }
+
+
+    string strTime = nav->time;
+
+    std::vector<int> vect2;
+    std::stringstream ss2(strTime);
+
+    for (int i; ss2 >> i;) {
+      vect2.push_back(i);
+      if (ss2.peek() == ':')
+          ss2.ignore();
+    }
+
+    string writeSec = ""; string writeMin = ""; string writeHour = "";
+
+    if (vect2[0] < 10) {
+      writeHour = "0" + to_string(vect2[0]);
+    } else {
+      writeHour = to_string(vect2[0]);
+    }
+
+    if (vect2[1] < 10) {
+      writeMin = "0" + to_string(vect2[1]);
+    } else {
+      writeMin = to_string(vect2[1]);
+    }
+
+    if (vect2[2] < 10) {
+      writeSec = "0" + to_string(vect2[2]);
+    } else {
+      writeSec = to_string(vect2[2]);
+    }
+
       vFile << nav->est.venue << " "
             << indiNames << " "
-            << nav->date << " "
-            << nav->time << " "
+            << writeDay << "-" << writeMonth << "-" << writeYear << " "
+            << writeHour << ":" << writeMin << ":" << writeSec << " "
             << depNames << " " 
             << nav->indi.vacDetails << " "
             << nav->indi.riskStat << endl;
@@ -1435,7 +1498,7 @@ void adminFunction(){
       cout << "---------------------------" << endl; 
       cout << "Insert Venue: ";
     }else{
-      if (venue == "KFC"){
+      if (venue == covidPat[result].venue){
         isValidVenue = true;
       } else {
         system("cls");
@@ -1461,7 +1524,7 @@ void adminFunction(){
   cin >> date;
   cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-  while(!is_date_valid(date) || date != "25-02-2022"){
+  while(!is_date_valid(date) || date != covidPat[result].date){
     cout << "-----------------------------------" << endl;
     cout << "           Invalid Date            " << endl;
     cout << "        Format 'DD-MM-YYYY'        " << endl; 
@@ -1476,7 +1539,7 @@ void adminFunction(){
   cin >> time;
   cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-  while(!is_time_valid(time) || time != "13:00:00"){
+  while(!is_time_valid(time) || time != covidPat[result].time){
     cout << "-----------------------------------" << endl;
     cout << "           Invalid Time            " << endl;
     cout << "        Format 'HH:MM:SS'        " << endl; 
@@ -1505,28 +1568,30 @@ void adminFunction(){
 
       if (timeDiff <= 3600) {
 
-        victim[data[counterContactHistory]].riskStatus = "Close";
+        // victim[data[counterContactHistory]].riskStatus = "Close";
         contactHistory[counterContactHistory].name = victim[data[i]].name;
         contactHistory[counterContactHistory].venue = victim[data[i]].venue;
         contactHistory[counterContactHistory].date = victim[data[i]].date;
         contactHistory[counterContactHistory].time = victim[data[i]].time;
         contactHistory[counterContactHistory].dependants = victim[data[i]].dependants;
         contactHistory[counterContactHistory].vacStatus = victim[data[i]].vacStatus;
-        contactHistory[counterContactHistory].riskStatus = victim[data[i]].riskStatus;
+        contactHistory[counterContactHistory].riskStatus = "Close";
         contactHistory[counterContactHistory].timeDiff = timeDiff;
         counterContactHistory++;
         
       } else if (timeDiff <= 7200){
-        victim[data[counterContactHistory]].riskStatus = "Casual";
+        // victim[data[counterContactHistory]].riskStatus = "Casual";
         contactHistory[counterContactHistory].name = victim[data[i]].name;
         contactHistory[counterContactHistory].venue = victim[data[i]].venue;
         contactHistory[counterContactHistory].date = victim[data[i]].date;
         contactHistory[counterContactHistory].time = victim[data[i]].time;
         contactHistory[counterContactHistory].dependants = victim[data[i]].dependants;
         contactHistory[counterContactHistory].vacStatus = victim[data[i]].vacStatus;
-        contactHistory[counterContactHistory].riskStatus = victim[data[i]].riskStatus;
+        contactHistory[counterContactHistory].riskStatus = "Casual";
         contactHistory[counterContactHistory].timeDiff = timeDiff;
         counterContactHistory++;
+      } else {
+        victim[data[counterContactHistory]].riskStatus = "Test";
       }
     }
   }

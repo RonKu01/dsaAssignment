@@ -1,8 +1,9 @@
-KFC Green 25-02-2022 14:20:00 Ryzen FullyVaccinated Low
-Campus Green 25-02-2022 08:00:00 Ryzen FullyVaccinated Low
-KFC Blue 25-02-2022 15:00:00 Peter FullyVaccinated Low
-MCD Blue 25-02-2022 10:56:00 - FullyVaccinated Low
-Campus Blue 25-02-2022 08:00:00 Peter FullyVaccinated Low
-KFC Pink 25-02-2022 13:30:00 Kelvin FullyVaccinated Low
-MCD Pink 25-02-2022 10:30:00 Kelvin FullyVaccinated Low
-Campus Pink 25-02-2022 08:00:00 Kelvin FullyVaccinated Low
+KFC Green 01-04-2022 11:20:00 Ryzen Fully Low
+Campus Green 25-02-2022 08:00:00 Ryzen Fully Low
+KFC Blue 01-04-2022 11:00:00 Peter Fully Low
+MCD Blue 25-02-2022 10:56:00 - Fully Low
+Campus Blue 25-02-2022 08:00:00 Peter Fully Low
+KFC Pink 01-04-2022 12:30:00 Kelvin Fully Low
+MCD Pink 25-02-2022 10:30:00 Kelvin Fully Low
+Campus Pink 25-02-2022 08:00:00 Kelvin Fully Low
+KFC sdfsdaf 01-04-2022 10:29:41 - Fully Low
