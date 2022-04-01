@@ -64,6 +64,7 @@ Dependants dep[10];
 int n = 10, front = - 1, rear = - 1;
 int numberOfDependants = 0; int amountOfVictimHistory = 0; int amountOfContact = 0;
 
+//Validation - check whether email is valid
 bool is_email_valid(const string& email)
 {
    // define a regular expression
@@ -74,6 +75,7 @@ bool is_email_valid(const string& email)
    return std::regex_match(email, pattern);
 }
 
+//Validation - check whether phoneNumber is valid
 bool is_phoneNumber_valid(const string& phoneNumber)
 {
    // define a regular expression
@@ -84,6 +86,7 @@ bool is_phoneNumber_valid(const string& phoneNumber)
    return std::regex_match(phoneNumber, pattern);
 }
 
+//Validation - check whether icPassport is valid
 bool is_icPassport_valid(const string& icPassport)
 {
    // define a regular expression
@@ -94,6 +97,7 @@ bool is_icPassport_valid(const string& icPassport)
    return std::regex_match(icPassport, pattern);
 }
 
+//Validation - check whether date is valid
 bool is_date_valid(const string& date)
 {
    // define a regular expression
@@ -104,6 +108,7 @@ bool is_date_valid(const string& date)
    return std::regex_match(date, pattern);
 }
 
+//Validation - check whether time is valid
 bool is_time_valid(const string& time)
 {
    // define a regular expression
@@ -113,6 +118,7 @@ bool is_time_valid(const string& time)
    return std::regex_match(time, pattern);
 }
 
+//ReadFile and store into struct array
 Establishment* getEstList(){
   Establishment est;
   static Establishment estList[10];
@@ -129,6 +135,7 @@ Establishment* getEstList(){
   return estList;
 }
 
+//Display individual profile
 void displayProfile(){
   cout << "---------------------------------" << endl;
   cout << "        Individual Account       " << endl;
@@ -144,13 +151,13 @@ void displayProfile(){
   cout << "Risk Status : " << indi.riskStat << endl;
 }
 
+//Display venue list for check-in 
 void displayEst() {
 
   Establishment* est;
   est = getEstList();
 
   cout << "----------------" << endl;
-  cout << "   Venue List   " << endl;
   cout << "Venue   List    " << endl; 
   cout << "----------------" << endl;
   
@@ -161,6 +168,7 @@ void displayEst() {
   cout << "----------------" << endl;
 }
 
+//Update individual profile (email, phoneNum, address)
 void updateProfile(){
   
   int userOption; string email; string phoneNumber;
@@ -237,6 +245,7 @@ void updateProfile(){
   } while (!(userOption == 4));
 }
 
+//Display List of Dependant
 void displayDependants(){
 
   // Queue is Empty
@@ -270,16 +279,19 @@ void displayDependants(){
   }
 }
 
+//Add dependants (included Validation)
 void addDependants() {
   string depIcPassport, gender; 
   char depGender;
   int userInput, depAge;
   bool isValidAge = false;
   bool isValidDep = false; 
-
+    
+   //Queue is full
    if (rear == n - 1)
      cout<<"Failed : Reached Maximum Dependants (10)"<<endl;
    else {
+      //Queue is empty
       if (front == - 1) {
         front = 0; rear = 0; 
         cout << "-----------------------------------" << endl;
@@ -434,6 +446,7 @@ void addDependants() {
         cout << "Dependants Successfully Added!" << endl;
         cout << "-------------------------------" << endl;
       } else {
+        //Queue already has value
         rear = rear + 1;
         cout << "-----------------------------------" << endl;
         cout << "         Dependants Details        " << endl; 
@@ -583,7 +596,9 @@ void addDependants() {
    }
 }
 
+//Delete Dependants
 void deleteDependants(){
+  //Queue is Empty
    if (front == - 1) {
      system("cls");
      cout << "-------------------------------" << endl;
@@ -609,6 +624,7 @@ void deleteDependants(){
             cout << "Err : Please insert number! " << endl;
             cout << "---------------------------" << endl; 
         } else {
+            //System wont delete if -1
             if(depDelete == -1)
             {
               system("cls");
@@ -618,6 +634,7 @@ void deleteDependants(){
               if (selectedDep > rear) {
                 cout << "Please only enter valid dependant Number!" << endl;
               } else {
+                //System will delete one dependant and the queue will replace by the following dependants
 
                 for(int i=selectedDep; i<rear; i++) {
                   dep[i].depDetails.name = dep[i+1].depDetails.name;
@@ -646,6 +663,7 @@ void deleteDependants(){
    }
 }
 
+//Manage Dependants
 void manageDependants(){
 
   int userOption2;
@@ -720,6 +738,7 @@ void pushHistory
   top = nHistory;
 };
 
+//Write File and 
 void writeFile(){
 
   History* nav = top;
@@ -831,6 +850,7 @@ void writeFile(){
   }
 }
 
+//Check-in Function
 void checkIn(){
 
   int userOption = 0, userOption2, userOption3;
@@ -851,7 +871,8 @@ void checkIn(){
     char input = ' ';
     cin >> input;
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
+    
+    //Insert the amount of dependants 
     if(input == 'Y' || input == 'y')
     {
       displayDependants();
@@ -958,6 +979,7 @@ void checkIn(){
       cin.ignore(numeric_limits<streamsize>::max(), '\n');
       system("cls");
       displayEst();
+      //Validation - check whether the venue is valid
       cout << "(Press -1 to cancel login) "; 
       cout << "Please insert Venue Index!" << endl;
       cout << "Insert Venue Code: ";
@@ -970,6 +992,7 @@ void checkIn(){
         } else {
           system("cls");
           displayEst();
+          //Validation - check whether the venue is valid
           cout << "Please insert valid Venue" << endl;
           cout << "Insert Venue Code: ";
         }
@@ -1003,6 +1026,7 @@ void checkIn(){
         depNames = "-";
       }
 
+      //Display indi and dependants check-in details 
       cout << "Venue      : " << venue << endl; 
       cout << "Name       : " << indi.userDetails.name << endl;
       cout << "Date       : " << checkInDate << endl;
@@ -1018,6 +1042,7 @@ void checkIn(){
   writeFile();
 }
 
+//Display Indi and Dependants Check-in History List 
 void displayHistoryList() {
 
   if (top == NULL)
@@ -1059,6 +1084,7 @@ void displayHistoryList() {
   cout << "------------------------------------------------------------------------------------" << endl;
 }; 
 
+//Individual Function (Register & Validation)
 void indiFunction(){
   int userOption, userInput, age;
   string icPassport, email, phoneNumber; 
@@ -1313,11 +1339,13 @@ void indiFunction(){
   cout << "--------------------------------------" << endl;
 }
 
+//Get CovidPatient History 
 Person* getCovidPatHistory(){
   Person covidPat;
   static Person covidPatHistory[20];
 
   int i = 0;
+  //Read CovidPat File
   ifstream file("covid_pat.txt");
   while( file >> covidPat.venue >> covidPat.name >> covidPat.date >> covidPat.time >> covidPat.dependants >> covidPat.vacStatus >> covidPat.riskStatus)
   {
@@ -1334,11 +1362,13 @@ Person* getCovidPatHistory(){
   return covidPatHistory;
 }
 
+//Get CovidVictim History
 Person* getVictimHistory(){
   Person victim;
   static Person victimHistory[50];
 
   int i = 0;
+  //Read Covid Vcitim File
   ifstream file("covid_victim.txt");
   while( file >> victim.venue >> victim.name >> victim.date >> victim.time >> victim.dependants >> victim.vacStatus >> victim.riskStatus)
   {
@@ -1356,6 +1386,7 @@ Person* getVictimHistory(){
   return victimHistory;
 }
 
+//Linear Search for Risk Status
 int linearSearchRisk(Person history[], int size, string searchValue){
  
   for(int i = 0; i < size; i ++){
@@ -1369,6 +1400,7 @@ int linearSearchRisk(Person history[], int size, string searchValue){
   return -1;
 }
 
+//Linear Search for Venue get detected
 int* linearSearchVenue(Person history[], int size, string searchValue){
 
   static int victimIndex[50]; 
@@ -1385,6 +1417,7 @@ int* linearSearchVenue(Person history[], int size, string searchValue){
   return victimIndex;
 }
 
+//Array sorting for Patient get detected 
 Person* arrSorting(Person history[], int size) {
   int i, j, min, timeDiff;
   string venue, name, date, time, dependants, vacStatus, riskStatus;
@@ -1424,6 +1457,7 @@ Person* arrSorting(Person history[], int size) {
   return history;
 }
 
+//Admin Function (Search for High Risk)
 void adminFunction(){
   bool isHighRisk = false; bool isValidVenue = false; 
   string risk, venue, date, time; 
@@ -1445,6 +1479,7 @@ void adminFunction(){
     cin >> risk;
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
+    //Validation - check whether risk status is valid
     if(cin.fail()){
       cin.clear();
       cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -1471,6 +1506,7 @@ void adminFunction(){
   if(result >= 0){
     system("cls");
 
+    //Display High Risk Patient
     cout << "------------------------------" << endl;
     cout << "    High Risk Person Found!   " << endl;
     cout << "------------------------------" << endl;
@@ -1491,6 +1527,7 @@ void adminFunction(){
     cin >> venue;
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
+    //Validation - check whether venue deetcted is valid
     if(cin.fail()){
       cin.clear();
       cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -1525,6 +1562,7 @@ void adminFunction(){
   cin >> date;
   cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
+  //Validation - check whether detected date is valid
   while(!is_date_valid(date) || date != covidPat[result].date){
     cout << "-----------------------------------" << endl;
     cout << "           Invalid Date            " << endl;
@@ -1540,6 +1578,7 @@ void adminFunction(){
   cin >> time;
   cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
+  //Validation - check whether detected time is valid
   while(!is_time_valid(time) || time != covidPat[result].time){
     cout << "-----------------------------------" << endl;
     cout << "           Invalid Time            " << endl;
@@ -1567,6 +1606,7 @@ void adminFunction(){
       int victimTime = stoi(victimHour)*3600 + stoi(victimMin)*60 + stoi(victimSec);
       int timeDiff = victimTime - covidTime;
 
+      //Close contact -- within 1 hour
       if (timeDiff <= 3600) {
 
         // victim[data[counterContactHistory]].riskStatus = "Close";
@@ -1580,7 +1620,9 @@ void adminFunction(){
         contactHistory[counterContactHistory].timeDiff = timeDiff;
         counterContactHistory++;
         
-      } else if (timeDiff <= 7200){
+      } 
+       //Casual contact -- within 2 hour
+      else if (timeDiff <= 7200){
         // victim[data[counterContactHistory]].riskStatus = "Casual";
         contactHistory[counterContactHistory].name = victim[data[i]].name;
         contactHistory[counterContactHistory].venue = victim[data[i]].venue;
@@ -1601,6 +1643,7 @@ void adminFunction(){
 
   system("cls");
   
+  //Display the list of people who get Casual or Close contact
   cout << "Displaying Potential Covid Chain!" << endl;
   cout << "---------------------------------------------------------------------------------------" << endl;
   cout << "Venue   Name        Date        Time      Dependants     Vaccination       Risk Status " << endl;
@@ -1634,6 +1677,8 @@ int main() {
     cout << "2) Admin                       " << endl;
     cout << "3) Exit Application            " << endl;
     cout << "-------------------------------" << endl; 
+    cout << "Input: ";
+    
 
     cin >> userLogin;
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
