@@ -703,6 +703,7 @@ void manageDependants(){
   }while(!(userOption2 == 4));
 }
 
+//Add History into stack linked list
 void pushHistory
 ( 
   int estCode,
@@ -738,7 +739,7 @@ void pushHistory
   top = nHistory;
 };
 
-//Write File and 
+//Write data into covid_victim.txt file 
 void writeFile(){
 
   History* nav = top;
@@ -768,12 +769,13 @@ void writeFile(){
         depNames = "-";
       }
 
+      //Remove Spacing withtin individual Names & Dependants Names to avoid conflict
       string indiNames = nav->indi.userDetails.name;
       indiNames.erase(remove(indiNames.begin(), indiNames.end(), ' '), indiNames.end());
       depNames.erase(remove(depNames.begin(), depNames.end(), ' '), depNames.end());
 
+      //Format Date Structure
       string strDate = nav->date;
-
       std::vector<int> vect;
       std::stringstream ss(strDate);
 
@@ -783,13 +785,20 @@ void writeFile(){
             ss.ignore();
       }
 
+      //Format Date : DD-MM-YYYY
       string writeDay = ""; string writeMonth = ""; string writeYear = "";
 
+      //if Day is < 10, it will add a '0' in front. 
+      //For example, if Day is 8, it will shown as 08.
       if (vect[0] < 10) {
         writeDay = "0" + to_string(vect[0]);
       } else {
         writeDay = to_string(vect[0]);
       }
+
+      
+      //if Month is < 10, it will add a '0' in front. 
+      //For example, if Month is 2, it will shown as 02.
 
       if (vect[1] < 10) {
         writeMonth = "0" + to_string(vect[1]);
@@ -815,7 +824,11 @@ void writeFile(){
           ss2.ignore();
     }
 
+    //Format Time : HH:MM:SS
     string writeSec = ""; string writeMin = ""; string writeHour = "";
+
+    //if Hour is < 10, it will add a '0' in front. 
+    //For example, if hour is 6 in the morning, it will shown as 06.
 
     if (vect2[0] < 10) {
       writeHour = "0" + to_string(vect2[0]);
@@ -823,11 +836,18 @@ void writeFile(){
       writeHour = to_string(vect2[0]);
     }
 
+    //if min is < 10, it will add a '0' in front. 
+    //For example, if min is 1, it will shown as 01.
+
     if (vect2[1] < 10) {
       writeMin = "0" + to_string(vect2[1]);
     } else {
       writeMin = to_string(vect2[1]);
     }
+
+    //if sec is < 10, it will add a '0' in front. 
+    //For example, if sec is 5, it will shown as 05.
+
 
     if (vect2[2] < 10) {
       writeSec = "0" + to_string(vect2[2]);
@@ -891,23 +911,27 @@ void checkIn(){
               cout << "Please insert Integer!" << endl;
               cout << "Keyin the amount of dependants: ";
             }else {
-              // User Option > amount of dependants 
               if ((userOption-1) <= rear){
+                // User Option is one of the dependants 
                 isValidDep = true;
               } else if ((userOption-1) <= 0) {
+                // User did not have dependants with him now
                 NoDep = true;
                 break;
               } else {
+                // User Option > amount of dependants 
                 cout << "You only have " << (rear+1) << " dependant(s)!" << endl;
                 cout << "Keyin the amount of dependants: ";
               }
             }
           }while(!(isValidDep == true));
 
+          // User did not have dependants with him now
           if (NoDep == true) {
             system("cls");
             break;
           } else {
+            // User has dependants with him now
             int arrDepVisited[userOption]; bool isNew = true;  int x = 0; 
 
             for (int i = 0; i < userOption; i++){
@@ -925,6 +949,7 @@ void checkIn(){
               } else {
                 int selectedDep = userOption2 - 1;
 
+                // Validation : User re-enter the same dependant. 
                 while(x < i) {
                   if (arrDepVisited[x] == selectedDep) {
                     isNew = false;
@@ -1045,6 +1070,7 @@ void checkIn(){
 //Display Indi and Dependants Check-in History List 
 void displayHistoryList() {
 
+  // Stack Linked List is empty!
   if (top == NULL)
   {
     cout << "History is empty" << endl;
@@ -1400,7 +1426,7 @@ int linearSearchRisk(Person history[], int size, string searchValue){
   return -1;
 }
 
-//Linear Search for Venue get detected
+//Linear Search for Venue
 int* linearSearchVenue(Person history[], int size, string searchValue){
 
   static int victimIndex[50]; 
@@ -1417,7 +1443,7 @@ int* linearSearchVenue(Person history[], int size, string searchValue){
   return victimIndex;
 }
 
-//Array sorting for Patient get detected 
+//Array sorting for covid Victim by using Time
 Person* arrSorting(Person history[], int size) {
   int i, j, min, timeDiff;
   string venue, name, date, time, dependants, vacStatus, riskStatus;
@@ -1608,8 +1634,6 @@ void adminFunction(){
 
       //Close contact -- within 1 hour
       if (timeDiff <= 3600) {
-
-        // victim[data[counterContactHistory]].riskStatus = "Close";
         contactHistory[counterContactHistory].name = victim[data[i]].name;
         contactHistory[counterContactHistory].venue = victim[data[i]].venue;
         contactHistory[counterContactHistory].date = victim[data[i]].date;
@@ -1621,9 +1645,8 @@ void adminFunction(){
         counterContactHistory++;
         
       } 
-       //Casual contact -- within 2 hour
+       //Casual contact -- between 1 ~ 2 hour
       else if (timeDiff <= 7200){
-        // victim[data[counterContactHistory]].riskStatus = "Casual";
         contactHistory[counterContactHistory].name = victim[data[i]].name;
         contactHistory[counterContactHistory].venue = victim[data[i]].venue;
         contactHistory[counterContactHistory].date = victim[data[i]].date;
@@ -1639,6 +1662,7 @@ void adminFunction(){
     }
   }
 
+  //Sorting according to Time & Diffenciate Close Contact and Casual Contact Victim
   sortedHistory = arrSorting(contactHistory, counterContactHistory);
 
   system("cls");
